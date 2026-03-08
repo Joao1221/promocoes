@@ -27,7 +27,7 @@
         <h2 class="text-2xl font-black text-slate-900">Promocoes do dia</h2>
         <a href="<?= e(url('buscar')) ?>" class="text-sm font-semibold text-blue-600">Ver tudo</a>
     </div>
-    <div class="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <?php foreach ($promotions as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
     </div>
 </section>
@@ -55,7 +55,7 @@
         <h2 class="text-2xl font-black text-slate-900">Produtos em alta</h2>
         <a href="<?= e(url('buscar')) ?>" class="text-sm font-semibold text-blue-600">Mais vendidos</a>
     </div>
-    <div class="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         <?php foreach ($featuredProducts as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
     </div>
 </section>

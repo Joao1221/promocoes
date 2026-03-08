@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-10 grid grid-cols-2 gap-4 xl:grid-cols-4">
             <?php foreach ($products as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
         </div>
     </div>

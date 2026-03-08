@@ -23,7 +23,7 @@
                 <h2 class="text-2xl font-black">Resultados</h2>
                 <p class="text-sm text-slate-500"><?= count($products) ?> itens</p>
             </div>
-            <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-2 gap-4 xl:grid-cols-3">
                 <?php foreach ($products as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
             </div>
         </div>
