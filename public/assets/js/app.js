@@ -1,6 +1,26 @@
 document.addEventListener('alpine:init', () => {});
 
 document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('[data-mobile-menu-toggle]');
+    const menuPanel = document.querySelector('[data-mobile-menu-panel]');
+    const categoryMoreButton = document.querySelector('[data-category-menu-more]');
+    const categoryMenuItems = document.querySelectorAll('[data-category-menu-item]');
+
+    if (menuToggle && menuPanel) {
+        menuToggle.addEventListener('click', () => {
+            const isOpen = menuPanel.classList.contains('hidden');
+            menuPanel.classList.toggle('hidden', !isOpen);
+            menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
+
+    if (categoryMoreButton && categoryMenuItems.length > 0) {
+        categoryMoreButton.addEventListener('click', () => {
+            categoryMenuItems.forEach((item) => item.classList.remove('hidden'));
+            categoryMoreButton.classList.add('hidden');
+        });
+    }
+
     const rotator = document.querySelector('[data-category-rotator]');
     if (!rotator) {
         return;

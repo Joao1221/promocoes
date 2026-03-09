@@ -1,20 +1,20 @@
 <section class="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.2fr_.8fr]">
+    <div class="mx-auto grid max-w-7xl gap-6 px-4 py-7 lg:grid-cols-[1.2fr_.8fr] lg:gap-10 lg:py-14">
         <div>
             <p class="text-sm font-semibold uppercase tracking-[0.25em] text-blue-100">Marketplace municipal</p>
-            <h1 class="mt-4 text-4xl font-black leading-tight lg:text-6xl">Compre de quem movimenta Capela-SE.</h1>
-            <p class="mt-4 max-w-2xl text-lg text-blue-50">Promoções locais, lojas da cidade e pedidos online em um shopping virtual feito para o comércio capelense.</p>
-            <div class="mt-8 flex flex-wrap gap-3">
-                <a href="<?= e(url('buscar')) ?>" class="rounded-2xl bg-white px-6 py-3 font-bold text-blue-600">Explorar ofertas</a>
-                <a href="<?= e(url('cadastro')) ?>" class="rounded-2xl border border-white/30 px-6 py-3 font-bold text-white">Quero vender</a>
+            <h1 class="mt-2 text-2xl font-black leading-tight sm:text-3xl lg:mt-4 lg:text-6xl">Compre de quem movimenta Capela-SE.</h1>
+            <p class="mt-2 max-w-2xl text-sm text-blue-50 sm:text-base lg:mt-4 lg:text-lg">Promoções locais, lojas da cidade e pedidos online em um shopping virtual feito para o comércio capelense.</p>
+            <div class="mt-4 flex flex-wrap gap-2 lg:mt-8 lg:gap-3">
+                <a href="<?= e(url('buscar')) ?>" class="rounded-[4px] bg-white px-6 py-3 font-bold text-blue-600">Explorar ofertas</a>
+                <a href="<?= e(url('cadastro')) ?>" class="rounded-[4px] border border-white/30 px-6 py-3 font-bold text-white">Quero vender</a>
             </div>
         </div>
-        <div class="grid grid-cols-3 gap-2" data-category-rotator data-rotation-ms="15000">
+        <div class="hidden grid-cols-3 gap-2 lg:grid" data-category-rotator data-rotation-ms="15000">
             <?php foreach ($categories as $index => $category): ?>
                 <?php $group = intdiv($index, 9); ?>
-                <a href="<?= e(url('buscar?categoria=' . $category['slug'])) ?>" class="overflow-hidden rounded-2xl bg-white/15 backdrop-blur transition hover:bg-white/20 <?= $group > 0 ? 'hidden' : '' ?>" data-category-group="<?= (int) $group ?>">
+                <a href="<?= e(url('buscar?categoria=' . $category['slug'])) ?>" class="overflow-hidden rounded-[2px] bg-white/15 backdrop-blur transition hover:bg-white/20 <?= $group > 0 ? 'hidden' : '' ?>" data-category-group="<?= (int) $group ?>">
                     <div class="p-2.5">
-                        <div class="inline-flex rounded-xl bg-white/20 p-2 text-white">
+                        <div class="inline-flex rounded-[2px] bg-white/20 p-2 text-white">
                             <?= category_icon_svg($category['icone'] ?? null) ?>
                         </div>
                         <p class="mt-1.5 text-xs font-bold leading-tight"><?= e($category['nome']) ?></p>
@@ -30,7 +30,7 @@
         <h2 class="text-2xl font-black text-slate-900">Promocoes do dia</h2>
         <a href="<?= e(url('buscar')) ?>" class="text-sm font-semibold text-blue-600">Ver tudo</a>
     </div>
-    <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+    <div class="home-product-grid mt-6 grid grid-cols-2 gap-2 sm:gap-4 xl:grid-cols-4">
         <?php foreach ($promotions as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
     </div>
 </section>
@@ -60,7 +60,7 @@
         <h2 class="text-2xl font-black text-slate-900">Produtos em alta</h2>
         <a href="<?= e(url('buscar')) ?>" class="text-sm font-semibold text-blue-600">Mais vendidos</a>
     </div>
-    <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
+    <div class="home-product-grid mt-6 grid grid-cols-2 gap-2 sm:gap-4 xl:grid-cols-4">
         <?php foreach ($featuredProducts as $product): require __DIR__ . '/../partials/product-card.php'; endforeach; ?>
     </div>
 </section>
