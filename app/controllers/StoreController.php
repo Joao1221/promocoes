@@ -39,9 +39,13 @@ class StoreController extends Controller
             'descricao' => trim($_POST['descricao'] ?? ''),
             'telefone' => trim($_POST['telefone'] ?? ''),
             'whatsapp' => preg_replace('/\D+/', '', $_POST['whatsapp'] ?? ''),
+            'vende_online' => (int) (($_POST['vende_online'] ?? '1') === '1'),
+            'forma_pagamento' => trim($_POST['forma_pagamento'] ?? 'PIX'),
+            'tem_delivery' => (int) (($_POST['tem_delivery'] ?? '0') === '1'),
             'instagram' => trim($_POST['instagram'] ?? ''),
             'logo' => null,
             'banner' => null,
+            'banner_mobile' => null,
             'cidade' => trim($_POST['cidade'] ?? 'Capela'),
             'bairro' => trim($_POST['bairro'] ?? ''),
             'endereco' => trim($_POST['endereco'] ?? ''),
@@ -55,9 +59,14 @@ class StoreController extends Controller
             $this->redirect('lojista/loja');
         }
 
+        if ($data['forma_pagamento'] === '') {
+            $data['forma_pagamento'] = 'PIX';
+        }
+
         try {
             $data['logo'] = Upload::image($_FILES['logo'] ?? [], __DIR__ . '/../../uploads/lojas');
             $data['banner'] = Upload::image($_FILES['banner'] ?? [], __DIR__ . '/../../uploads/lojas');
+            $data['banner_mobile'] = Upload::image($_FILES['banner_mobile'] ?? [], __DIR__ . '/../../uploads/lojas');
         } catch (RuntimeException $e) {
             Session::flash('error', $e->getMessage());
             $this->redirect('lojista/loja');

@@ -9,12 +9,49 @@ class Product extends Model
              INNER JOIN lojas l ON l.id = p.loja_id
              INNER JOIN categorias c ON c.id = p.categoria_id
              WHERE p.status = "aprovado" AND l.status = "aprovada" AND p.preco_promocional IS NOT NULL
-             ORDER BY ((p.preco_original - p.preco_promocional) / p.preco_original) DESC, p.updated_at DESC
-             LIMIT :limit'
+             ORDER BY ((p.preco_original - p.preco_promocional) / p.preco_original) DESC, p.updated_at DESC'
         );
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $this->interleaveByStore($stmt->fetchAll(), $limit);
+    }
+
+    private function interleaveByStore(array $products, int $limit): array
+    {
+        if ($limit <= 0 || $products === []) {
+            return [];
+        }
+
+        $byStore = [];
+        foreach ($products as $product) {
+            $storeId = (int) $product['loja_id'];
+            $byStore[$storeId][] = $product;
+        }
+
+        $storeIds = array_keys($byStore);
+        $selected = [];
+
+        while (count($selected) < $limit) {
+            $addedInRound = false;
+
+            foreach ($storeIds as $storeId) {
+                if (empty($byStore[$storeId])) {
+                    continue;
+                }
+
+                $selected[] = array_shift($byStore[$storeId]);
+                $addedInRound = true;
+
+                if (count($selected) >= $limit) {
+                    break;
+                }
+            }
+
+            if (!$addedInRound) {
+                break;
+            }
+        }
+
+        return $selected;
     }
 
     public function featured(int $limit = 12): array

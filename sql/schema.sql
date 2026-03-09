@@ -22,9 +22,13 @@ CREATE TABLE IF NOT EXISTS lojas (
     descricao TEXT NULL,
     telefone VARCHAR(25) NOT NULL,
     whatsapp VARCHAR(25) NOT NULL,
+    vende_online TINYINT(1) NOT NULL DEFAULT 1,
+    forma_pagamento VARCHAR(120) NOT NULL DEFAULT 'PIX',
+    tem_delivery TINYINT(1) NOT NULL DEFAULT 0,
     instagram VARCHAR(80) NULL,
     logo VARCHAR(255) NULL,
     banner VARCHAR(255) NULL,
+    banner_mobile VARCHAR(255) NULL,
     cidade VARCHAR(120) NOT NULL DEFAULT 'Capela',
     bairro VARCHAR(120) NOT NULL,
     endereco VARCHAR(180) NOT NULL,
@@ -141,3 +145,8 @@ ON DUPLICATE KEY UPDATE nome = VALUES(nome), icone = VALUES(icone);
 INSERT INTO usuarios (nome, email, senha, role, status)
 VALUES ('Administrador', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', 'admin', 'ativo')
 ON DUPLICATE KEY UPDATE nome = VALUES(nome);
+
+ALTER TABLE lojas
+    ADD COLUMN IF NOT EXISTS vende_online TINYINT(1) NOT NULL DEFAULT 1 AFTER whatsapp,
+    ADD COLUMN IF NOT EXISTS forma_pagamento VARCHAR(120) NOT NULL DEFAULT 'PIX' AFTER vende_online,
+    ADD COLUMN IF NOT EXISTS tem_delivery TINYINT(1) NOT NULL DEFAULT 0 AFTER forma_pagamento;

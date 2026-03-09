@@ -9,12 +9,15 @@
                 <a href="<?= e(url('cadastro')) ?>" class="rounded-2xl border border-white/30 px-6 py-3 font-bold text-white">Quero vender</a>
             </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-            <?php foreach (array_slice($categories, 0, 4) as $category): ?>
-                <a href="<?= e(url('buscar?categoria=' . $category['slug'])) ?>" class="overflow-hidden rounded-3xl bg-white/15 backdrop-blur transition hover:bg-white/20">
-                    <img src="<?= e(category_image($category['slug'])) ?>" alt="<?= e($category['nome']) ?>" class="h-28 w-full object-cover" loading="lazy">
-                    <div class="p-4">
-                        <p class="text-lg font-bold"><?= e($category['nome']) ?></p>
+        <div class="grid grid-cols-3 gap-2" data-category-rotator data-rotation-ms="15000">
+            <?php foreach ($categories as $index => $category): ?>
+                <?php $group = intdiv($index, 9); ?>
+                <a href="<?= e(url('buscar?categoria=' . $category['slug'])) ?>" class="overflow-hidden rounded-2xl bg-white/15 backdrop-blur transition hover:bg-white/20 <?= $group > 0 ? 'hidden' : '' ?>" data-category-group="<?= (int) $group ?>">
+                    <div class="p-2.5">
+                        <div class="inline-flex rounded-xl bg-white/20 p-2 text-white">
+                            <?= category_icon_svg($category['icone'] ?? null) ?>
+                        </div>
+                        <p class="mt-1.5 text-xs font-bold leading-tight"><?= e($category['nome']) ?></p>
                     </div>
                 </a>
             <?php endforeach; ?>
@@ -35,14 +38,16 @@
 <section class="bg-white py-12">
     <div class="mx-auto max-w-7xl px-4">
         <h2 class="text-2xl font-black text-slate-900">Lojas em destaque</h2>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-5 xl:grid-cols-4">
             <?php foreach ($featuredStores as $store): ?>
                 <a href="<?= e(url('loja/' . $store['slug'])) ?>" class="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
-                    <img src="<?= e(upload_url('lojas', $store['banner'])) ?>" alt="<?= e($store['nome_loja']) ?>" class="h-36 w-full object-cover" loading="lazy">
+                    <div class="h-36 w-full bg-slate-100 p-2">
+                        <img src="<?= e(upload_url('lojas', $store['banner'])) ?>" alt="<?= e($store['nome_loja']) ?>" class="h-full w-full object-contain" loading="lazy">
+                    </div>
                     <div class="p-5">
-                        <img src="<?= e(upload_url('lojas', $store['logo'])) ?>" alt="<?= e($store['nome_loja']) ?>" class="-mt-14 h-16 w-16 rounded-2xl border-4 border-white object-cover bg-white">
+                        <img src="<?= e(upload_url('lojas', $store['logo'])) ?>" alt="<?= e($store['nome_loja']) ?>" class="-mt-14 h-16 w-16 rounded-2xl border-4 border-white bg-white object-contain p-1">
                         <h3 class="mt-4 text-lg font-black"><?= e($store['nome_loja']) ?></h3>
-                        <p class="mt-2 text-sm text-slate-600"><?= e($store['bairro']) ?>, <?= e($store['cidade']) ?></p>
+                        <p class="mt-2 text-sm text-slate-600"><?= e($store['endereco'] ?? (($store['bairro'] ?? '') . ', ' . ($store['cidade'] ?? ''))) ?></p>
                     </div>
                 </a>
             <?php endforeach; ?>
@@ -63,7 +68,7 @@
 <section class="bg-slate-100 py-12">
     <div class="mx-auto max-w-7xl px-4">
         <h2 class="text-2xl font-black text-slate-900">Lojas perto de voce</h2>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-5 xl:grid-cols-4">
             <?php foreach ($nearbyStores as $store): ?>
                 <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
                     <p class="text-sm font-semibold text-blue-600"><?= e($store['bairro']) ?></p>

@@ -39,11 +39,14 @@ class Store extends Model
     {
         $stmt = $this->db->prepare(
             'INSERT INTO lojas
-             (usuario_id, nome_loja, slug, descricao, telefone, whatsapp, instagram, logo, banner, cidade, bairro, endereco, horario_funcionamento, status, destaque, created_at, updated_at)
+             (usuario_id, nome_loja, slug, descricao, telefone, whatsapp, vende_online, forma_pagamento, tem_delivery, instagram, logo, banner, banner_mobile, cidade, bairro, endereco, horario_funcionamento, status, destaque, created_at, updated_at)
              VALUES
-             (:usuario_id, :nome_loja, :slug, :descricao, :telefone, :whatsapp, :instagram, :logo, :banner, :cidade, :bairro, :endereco, :horario_funcionamento, :status, :destaque, NOW(), NOW())'
+             (:usuario_id, :nome_loja, :slug, :descricao, :telefone, :whatsapp, :vende_online, :forma_pagamento, :tem_delivery, :instagram, :logo, :banner, :banner_mobile, :cidade, :bairro, :endereco, :horario_funcionamento, :status, :destaque, NOW(), NOW())'
         );
-        $stmt->execute($data);
+        $stmt->execute([
+            ...$data,
+            'banner_mobile' => $data['banner_mobile'] ?? null,
+        ]);
         return (int) $this->db->lastInsertId();
     }
 
@@ -56,9 +59,13 @@ class Store extends Model
             'descricao' => $data['descricao'],
             'telefone' => $data['telefone'],
             'whatsapp' => $data['whatsapp'],
+            'vende_online' => $data['vende_online'],
+            'forma_pagamento' => $data['forma_pagamento'],
+            'tem_delivery' => $data['tem_delivery'],
             'instagram' => $data['instagram'],
             'logo' => $data['logo'],
             'banner' => $data['banner'],
+            'banner_mobile' => $data['banner_mobile'] ?? null,
             'cidade' => $data['cidade'],
             'bairro' => $data['bairro'],
             'endereco' => $data['endereco'],
@@ -71,9 +78,13 @@ class Store extends Model
              descricao = :descricao,
              telefone = :telefone,
              whatsapp = :whatsapp,
+             vende_online = :vende_online,
+             forma_pagamento = :forma_pagamento,
+             tem_delivery = :tem_delivery,
              instagram = :instagram,
              logo = COALESCE(:logo, logo),
              banner = COALESCE(:banner, banner),
+             banner_mobile = COALESCE(:banner_mobile, banner_mobile),
              cidade = :cidade,
              bairro = :bairro,
              endereco = :endereco,

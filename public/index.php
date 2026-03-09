@@ -55,8 +55,11 @@ $router->get('/lojista/produtos/{id}/editar', [ProductController::class, 'vendor
 $router->post('/lojista/produtos', [ProductController::class, 'save']);
 
 $router->get('/admin', [AdminController::class, 'dashboard']);
+$router->get('/admin/categorias', [AdminController::class, 'categories']);
+$router->post('/admin/categorias/icones/aplicar', [AdminController::class, 'applyCategoryIcons']);
 $router->post('/admin/lojas/{id}/aprovar', [AdminController::class, 'approveStore']);
 $router->post('/admin/produtos/{id}/aprovar', [AdminController::class, 'approveProduct']);
+$router->post('/admin/categorias', [AdminController::class, 'storeCategory']);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $prefixes = array_unique([

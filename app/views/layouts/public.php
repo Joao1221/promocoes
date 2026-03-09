@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($title) ?> | <?= e(config('app')['name']) ?></title>
     <meta name="description" content="<?= e($title) ?> no marketplace local de Capela-SE.">
+    <link rel="icon" type="image/png" href="<?= e(url('public/img/favicon.png')) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">

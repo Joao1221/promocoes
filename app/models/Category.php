@@ -15,4 +15,20 @@ class Category extends Model
             'icone' => $icone,
         ]);
     }
+
+    public function assignIconsBySlug(array $map): int
+    {
+        $stmt = $this->db->prepare('UPDATE categorias SET icone = :icone, updated_at = NOW() WHERE slug = :slug');
+        $updated = 0;
+
+        foreach ($map as $slug => $icon) {
+            $stmt->execute([
+                'slug' => $slug,
+                'icone' => $icon,
+            ]);
+            $updated += $stmt->rowCount();
+        }
+
+        return $updated;
+    }
 }
