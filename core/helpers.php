@@ -14,7 +14,12 @@ function url(string $path = ''): string
 {
     $base = rtrim(config('app')['base_url'], '/');
     $path = ltrim($path, '/');
-    return $path ? $base . '/' . $path : $base;
+
+    if ($path === '') {
+        return $base !== '' ? $base : '/';
+    }
+
+    return $base !== '' ? $base . '/' . $path : '/' . $path;
 }
 
 function asset(string $path): string
