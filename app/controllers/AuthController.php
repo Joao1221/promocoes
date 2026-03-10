@@ -26,11 +26,12 @@ class AuthController extends Controller
         unset($user['senha']);
         Auth::login($user);
 
-        $this->redirect(match ($user['role']) {
-            'admin' => 'admin',
-            'lojista' => 'lojista',
-            default => '',
-        });
+        if ($user['role'] === 'admin') {
+            $this->redirect('admin');
+        }
+
+        $store = (new Store())->byUser((int) $user['id']);
+        $this->redirect($store ? 'lojista' : '');
     }
 
     public function showRegister(): void
@@ -42,14 +43,10 @@ class AuthController extends Controller
     {
         Csrf::validate($_POST['_token'] ?? null);
         $data = array_map('trim', $_POST);
-        $errors = Validator::required($data, ['nome', 'email', 'senha', 'role']);
+        $errors = Validator::required($data, ['nome', 'email', 'senha']);
 
         if (!Validator::email($data['email'] ?? null)) {
             $errors['email'] = 'Email invalido.';
-        }
-
-        if (!in_array($data['role'], ['consumidor', 'lojista'], true)) {
-            $errors['role'] = 'Perfil invalido.';
         }
 
         $userModel = new User();
@@ -62,7 +59,7 @@ class AuthController extends Controller
             $this->redirect('cadastro');
         }
 
-        $userModel->create($data + ['status' => 'ativo']);
+        $userModel->create($data + ['role' => 'consumidor', 'status' => 'ativo']);
         Session::flash('success', 'Conta criada. Faça login para continuar.');
         $this->redirect('login');
     }

@@ -29,7 +29,7 @@ class ProductController extends Controller
 
     public function vendorForm(?string $id = null): void
     {
-        AuthMiddleware::handle('lojista');
+        AuthMiddleware::handle(['consumidor', 'lojista']);
         $store = (new Store())->byUser((int) Auth::user()['id']);
         if (!$store) {
             Session::flash('error', 'Cadastre sua loja antes de cadastrar produtos.');
@@ -54,7 +54,7 @@ class ProductController extends Controller
 
     public function save(): void
     {
-        AuthMiddleware::handle('lojista');
+        AuthMiddleware::handle(['consumidor', 'lojista']);
         Csrf::validate($_POST['_token'] ?? null);
         $store = (new Store())->byUser((int) Auth::user()['id']);
 

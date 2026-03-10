@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(150) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     telefone VARCHAR(25) NULL,
+    endereco_entrega TEXT NULL,
     role ENUM('admin', 'lojista', 'consumidor') NOT NULL DEFAULT 'consumidor',
     status ENUM('ativo', 'inativo', 'bloqueado') NOT NULL DEFAULT 'ativo',
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -20,6 +21,8 @@ CREATE TABLE IF NOT EXISTS lojas (
     nome_loja VARCHAR(150) NOT NULL,
     slug VARCHAR(180) NOT NULL UNIQUE,
     descricao TEXT NULL,
+    documento_tipo ENUM('CPF', 'CNPJ') NOT NULL,
+    documento_numero VARCHAR(20) NOT NULL,
     telefone VARCHAR(25) NOT NULL,
     whatsapp VARCHAR(25) NOT NULL,
     vende_online TINYINT(1) NOT NULL DEFAULT 1,
@@ -149,4 +152,9 @@ ON DUPLICATE KEY UPDATE nome = VALUES(nome);
 ALTER TABLE lojas
     ADD COLUMN IF NOT EXISTS vende_online TINYINT(1) NOT NULL DEFAULT 1 AFTER whatsapp,
     ADD COLUMN IF NOT EXISTS forma_pagamento VARCHAR(120) NOT NULL DEFAULT 'PIX' AFTER vende_online,
-    ADD COLUMN IF NOT EXISTS tem_delivery TINYINT(1) NOT NULL DEFAULT 0 AFTER forma_pagamento;
+    ADD COLUMN IF NOT EXISTS tem_delivery TINYINT(1) NOT NULL DEFAULT 0 AFTER forma_pagamento,
+    ADD COLUMN IF NOT EXISTS documento_tipo ENUM('CPF', 'CNPJ') NOT NULL DEFAULT 'CPF' AFTER descricao,
+    ADD COLUMN IF NOT EXISTS documento_numero VARCHAR(20) NOT NULL DEFAULT '' AFTER documento_tipo;
+
+ALTER TABLE usuarios
+    ADD COLUMN IF NOT EXISTS endereco_entrega TEXT NULL AFTER telefone;

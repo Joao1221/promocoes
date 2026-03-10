@@ -1,4 +1,5 @@
 <?php $title = $title ?? config('app')['name']; ?>
+<?php $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumidor', 'lojista'], true); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,7 +16,7 @@
             <a class="text-2xl font-black" href="<?= e(url('')) ?>">Capela Market</a>
             <p class="mt-2 text-sm text-slate-300"><?= e($authUser['nome'] ?? '') ?></p>
             <nav class="mt-8 space-y-3 text-sm">
-                <?php if (($authUser['role'] ?? '') === 'lojista'): ?>
+                <?php if ($isMarketplaceUser): ?>
                     <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('lojista')) ?>">Dashboard</a>
                     <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('lojista/loja')) ?>">Minha loja</a>
                     <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('lojista/produtos/novo')) ?>">Novo produto</a>

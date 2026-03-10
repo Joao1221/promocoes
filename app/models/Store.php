@@ -39,9 +39,9 @@ class Store extends Model
     {
         $stmt = $this->db->prepare(
             'INSERT INTO lojas
-             (usuario_id, nome_loja, slug, descricao, telefone, whatsapp, vende_online, forma_pagamento, tem_delivery, instagram, logo, banner, banner_mobile, cidade, bairro, endereco, horario_funcionamento, status, destaque, created_at, updated_at)
+             (usuario_id, nome_loja, slug, descricao, documento_tipo, documento_numero, telefone, whatsapp, vende_online, forma_pagamento, tem_delivery, instagram, logo, banner, banner_mobile, cidade, bairro, endereco, horario_funcionamento, status, destaque, created_at, updated_at)
              VALUES
-             (:usuario_id, :nome_loja, :slug, :descricao, :telefone, :whatsapp, :vende_online, :forma_pagamento, :tem_delivery, :instagram, :logo, :banner, :banner_mobile, :cidade, :bairro, :endereco, :horario_funcionamento, :status, :destaque, NOW(), NOW())'
+             (:usuario_id, :nome_loja, :slug, :descricao, :documento_tipo, :documento_numero, :telefone, :whatsapp, :vende_online, :forma_pagamento, :tem_delivery, :instagram, :logo, :banner, :banner_mobile, :cidade, :bairro, :endereco, :horario_funcionamento, :status, :destaque, NOW(), NOW())'
         );
         $stmt->execute([
             ...$data,
@@ -57,6 +57,8 @@ class Store extends Model
             'nome_loja' => $data['nome_loja'],
             'slug' => $data['slug'],
             'descricao' => $data['descricao'],
+            'documento_tipo' => $data['documento_tipo'],
+            'documento_numero' => $data['documento_numero'],
             'telefone' => $data['telefone'],
             'whatsapp' => $data['whatsapp'],
             'vende_online' => $data['vende_online'],
@@ -76,6 +78,8 @@ class Store extends Model
              nome_loja = :nome_loja,
              slug = :slug,
              descricao = :descricao,
+             documento_tipo = :documento_tipo,
+             documento_numero = :documento_numero,
              telefone = :telefone,
              whatsapp = :whatsapp,
              vende_online = :vende_online,

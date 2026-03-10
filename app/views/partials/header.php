@@ -1,4 +1,7 @@
-<?php $headerCategories = is_array($categories ?? null) ? $categories : []; ?>
+<?php
+$headerCategories = is_array($categories ?? null) ? $categories : [];
+$isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumidor', 'lojista'], true);
+?>
 <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
     <div class="mx-auto max-w-7xl px-4 py-4">
         <div class="flex items-center justify-between gap-4">
@@ -37,7 +40,7 @@
             </form>
             <div class="hidden items-center gap-3 md:flex">
                 <?php if ($authUser): ?>
-                    <?php if (($authUser['role'] ?? '') === 'lojista'): ?>
+                    <?php if ($isMarketplaceUser): ?>
                         <a href="<?= e(url('lojista')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Painel</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>
@@ -59,7 +62,7 @@
         <div class="mx-auto max-w-7xl space-y-6 px-4 py-5">
             <?php if ($authUser): ?>
                 <div class="space-y-3">
-                    <?php if (($authUser['role'] ?? '') === 'lojista'): ?>
+                    <?php if ($isMarketplaceUser): ?>
                         <a href="<?= e(url('lojista')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Painel</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>

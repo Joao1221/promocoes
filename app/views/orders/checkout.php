@@ -4,9 +4,10 @@
             <input type="hidden" name="_token" value="<?= e(Csrf::token()) ?>">
             <h1 class="text-3xl font-black">Finalizar pedido</h1>
             <div class="mt-8 grid gap-4">
-                <input type="text" name="nome_cliente" value="<?= e($authUser['nome'] ?? '') ?>" placeholder="Nome" class="rounded-2xl border border-slate-200 px-4 py-3" required>
-                <input type="text" name="telefone_cliente" placeholder="Telefone" class="rounded-2xl border border-slate-200 px-4 py-3" required>
-                <textarea name="endereco_entrega" placeholder="Endereco de entrega" class="rounded-2xl border border-slate-200 px-4 py-3" required></textarea>
+                <p class="rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">Para comprar, confirme seus dados de entrega. Esses dados ficam salvos para os proximos pedidos.</p>
+                <input type="text" name="nome_cliente" value="<?= e($checkoutProfile['nome'] ?? $authUser['nome'] ?? '') ?>" placeholder="Nome" class="rounded-2xl border border-slate-200 px-4 py-3" required>
+                <input type="text" name="telefone_cliente" value="<?= e($checkoutProfile['telefone'] ?? '') ?>" placeholder="Telefone" class="rounded-2xl border border-slate-200 px-4 py-3" required>
+                <textarea name="endereco_entrega" placeholder="Endereco de entrega" class="rounded-2xl border border-slate-200 px-4 py-3" required><?= e($checkoutProfile['endereco_entrega'] ?? '') ?></textarea>
                 <select name="forma_pagamento" class="rounded-2xl border border-slate-200 px-4 py-3" required>
                     <option value="">Forma de pagamento na entrega</option>
                     <option value="Dinheiro">Dinheiro</option>

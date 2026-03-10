@@ -15,6 +15,7 @@ class OrderController extends Controller
             'title' => 'Finalizar pedido',
             'cart' => $cart,
             'total' => $total,
+            'checkoutProfile' => Auth::user(),
         ]);
     }
 
@@ -48,6 +49,18 @@ class OrderController extends Controller
             Session::flash('error', 'Preencha os dados de entrega.');
             $this->redirect('checkout');
         }
+
+        (new User())->updateCheckoutProfile((int) Auth::user()['id'], [
+            'nome' => $customer['nome_cliente'],
+            'telefone' => $customer['telefone_cliente'],
+            'endereco_entrega' => $customer['endereco_entrega'],
+        ]);
+
+        Session::set('user', array_merge(Auth::user() ?? [], [
+            'nome' => $customer['nome_cliente'],
+            'telefone' => $customer['telefone_cliente'],
+            'endereco_entrega' => $customer['endereco_entrega'],
+        ]));
 
         $items = array_map(function ($item) {
             $item['subtotal'] = $item['preco'] * $item['quantidade'];

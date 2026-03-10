@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09/03/2026 às 17:01
+-- Tempo de geração: 10/03/2026 às 11:35
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -73,7 +73,14 @@ INSERT INTO `categorias` (`id`, `nome`, `slug`, `icone`, `created_at`, `updated_
 (30, 'Relojoaria', 'relojoaria', 'Relojoaria', '2026-03-09 12:37:20', '2026-03-09 12:58:18'),
 (31, 'Artigos de Festa', 'artigos-de-festa', 'Festa', '2026-03-09 12:37:20', '2026-03-09 12:58:18'),
 (32, 'Cama, Mesa e Banho', 'cama-mesa-e-banho', 'CamaMesaBanho', '2026-03-09 12:37:20', '2026-03-09 12:58:18'),
-(33, 'Posto de lavagem', 'posto-de-lavagem', 'Agenda', '2026-03-09 12:53:37', '2026-03-09 12:53:37');
+(33, 'Posto de lavagem', 'posto-de-lavagem', 'Agenda', '2026-03-09 12:53:37', '2026-03-09 12:53:37'),
+(0, 'Supermercado', 'supermercado', 'Carrinho', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Farmacia', 'farmacia', 'Saude', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Restaurantes', 'restaurantes', 'Prato', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Moda', 'moda', 'Camisa', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Eletronicos', 'eletronicos', 'Plug', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Construcao', 'construcao', 'Ferramenta', '2026-03-10 10:17:19', '2026-03-10 10:17:19'),
+(0, 'Servicos', 'servicos', 'Agenda', '2026-03-10 10:17:19', '2026-03-10 10:17:19');
 
 -- --------------------------------------------------------
 
@@ -114,6 +121,8 @@ CREATE TABLE `lojas` (
   `nome_loja` varchar(150) NOT NULL,
   `slug` varchar(180) NOT NULL,
   `descricao` text DEFAULT NULL,
+  `documento_tipo` enum('CPF','CNPJ') NOT NULL,
+  `documento_numero` varchar(20) NOT NULL,
   `telefone` varchar(25) NOT NULL,
   `whatsapp` varchar(25) NOT NULL,
   `vende_online` tinyint(1) NOT NULL DEFAULT 1,
@@ -137,9 +146,10 @@ CREATE TABLE `lojas` (
 -- Despejando dados para a tabela `lojas`
 --
 
-INSERT INTO `lojas` (`id`, `usuario_id`, `nome_loja`, `slug`, `descricao`, `telefone`, `whatsapp`, `vende_online`, `forma_pagamento`, `tem_delivery`, `instagram`, `logo`, `banner`, `banner_mobile`, `cidade`, `bairro`, `endereco`, `horario_funcionamento`, `status`, `destaque`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Loja Tem de Tudo', 'loja-tem-de-tudo', 'Produtos reais para testes do marketplace local.', '(79) 98888-8888', '79988888888', 1, 'PIX', 1, '@ofertasreaiscapela', 'loja-tem-de-tudo-logo.png', 'loja-tem-de-tudo-banner-desktop.png', 'loja-tem-de-tudo-banner-mobile.png', 'Capela', 'Centro', 'Rua do Comercio, 100', '08:00-18:00', 'aprovada', 1, '2026-03-09 13:24:18', '2026-03-09 15:45:53'),
-(2, 3, 'Farmácia Popular', 'farmacia-popular', 'Preço baixo de verdade', '79 99838-4857', '79 99838-4857', 1, 'PIX', 0, '@farmaciapopular.capela', 'farmacia-popular-logo.png', 'farmacia-popular-banner-desktop.png', 'farmacia-popular-banner-mobile.png', 'Capela', 'Centro', 'Av. Coelho e Campos, 120', 'Seg-Sab 07:00-20:00', 'aprovada', 1, '2026-03-09 13:55:22', '2026-03-09 14:16:58');
+INSERT INTO `lojas` (`id`, `usuario_id`, `nome_loja`, `slug`, `descricao`, `documento_tipo`, `documento_numero`, `telefone`, `whatsapp`, `vende_online`, `forma_pagamento`, `tem_delivery`, `instagram`, `logo`, `banner`, `banner_mobile`, `cidade`, `bairro`, `endereco`, `horario_funcionamento`, `status`, `destaque`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Loja Tem de Tudo', 'loja-tem-de-tudo', 'Produtos reais para testes do marketplace local.', 'CNPJ', '11444777000161', '(79) 98888-8888', '79988888888', 1, 'PIX', 1, '@ofertasreaiscapela', 'loja-tem-de-tudo-logo.png', 'loja-tem-de-tudo-banner-desktop.png', 'loja-tem-de-tudo-banner-mobile.png', 'Capela', 'Centro', 'Rua do Comercio, 100', '08:00-18:00', 'aprovada', 1, '2026-03-09 13:24:18', '2026-03-09 15:45:53'),
+(2, 3, 'Farmácia Popular', 'farmacia-popular', 'Preço baixo de verdade', 'CNPJ', '22333444000105', '79 99838-4857', '79 99838-4857', 1, 'PIX', 0, '@farmaciapopular.capela', 'farmacia-popular-logo.png', 'farmacia-popular-banner-desktop.png', 'farmacia-popular-banner-mobile.png', 'Capela', 'Centro', 'Av. Coelho e Campos, 120', 'Seg-Sab 07:00-20:00', 'aprovada', 1, '2026-03-09 13:55:22', '2026-03-09 14:16:58'),
+(0, 0, 'JR Tech Solutions', 'jr-tech-solutions', 'Loja especializada na venda de produtos de tecnologia. \r\nCelular, relógios, calculadora, desktop, notebook, pen-drive, etc.', 'CPF', '71277560587', '79 99924-8114', '79999248114', 1, 'PIX', 1, '@jrtech_solutions', '46f4de4620f73d842aa39cf6dc9c3240.png', '89b1c49d0b9044848cad944da442d0ca.png', '0dcae0ad65bb7e8037c5a9305b78572d.png', 'Capela', 'Inácio Barbosa', 'Rua Quirino, 1100', 'Seg. a Sex. das 08h às 17h; Sáb. das 08h às 12h', 'aprovada', 0, '2026-03-10 10:32:27', '2026-03-10 10:32:27');
 
 -- --------------------------------------------------------
 
@@ -162,6 +172,14 @@ CREATE TABLE `pedidos` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `usuario_id`, `loja_id`, `nome_cliente`, `telefone_cliente`, `endereco_entrega`, `forma_pagamento`, `observacoes`, `total`, `status`, `created_at`, `updated_at`) VALUES
+(0, 0, 2, 'João Rezende', '(79) 99924-8114', 'Rua Quirino, 1100', 'Pix', '', 17.01, 'novo', '2026-03-10 10:18:41', '2026-03-10 10:18:41'),
+(0, 0, 2, 'João Rezende', '(79) 99924-8114', 'Rua Quirino, 1100', 'Pix', '', 13.86, 'novo', '2026-03-10 10:18:58', '2026-03-10 10:18:58');
+
 -- --------------------------------------------------------
 
 --
@@ -177,6 +195,14 @@ CREATE TABLE `pedido_itens` (
   `subtotal` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `pedido_itens`
+--
+
+INSERT INTO `pedido_itens` (`id`, `pedido_id`, `produto_id`, `quantidade`, `preco_unitario`, `subtotal`, `created_at`) VALUES
+(0, 0, 34, 1, 17.01, 17.01, '2026-03-10 10:18:41'),
+(0, 0, 35, 1, 13.86, 13.86, '2026-03-10 10:18:58');
 
 -- --------------------------------------------------------
 
@@ -241,8 +267,8 @@ INSERT INTO `produtos` (`id`, `loja_id`, `categoria_id`, `nome`, `slug`, `descri
 (31, 1, 28, 'Smartphone Samsung Galaxy A36 5G 256GB 8GB RAM | Frete grátis', 'smartphone-samsung-galaxy-a36-5g-256gb-8gb-ram-frete-gr-atis', 'Dispositivo desbloqueado para que você escolha a companhia telefônica de sua preferência. | Compatível com redes 5G. | Tela de 6.7&quot;. | Tem 3 câmeras traseiras de 50mpx/8mpx/5mpx. | Câmeras frontais de 12Mpx. | Bateria de 5 Ah. | Memória interna de 256GB.  | Resistente à água. | Com reconhecimento facial e sensor de impressão digital. | Resistente à poeira.', 1799.00, 1655.08, 8, 'TEL-0118', 'real-telefonia-118.webp', 'aprovado', 0, 0, '2026-03-09 13:35:22', '2026-03-09 13:35:22'),
 (32, 1, 12, '2 Tela Aramada Painel Jardim Vertical Horta Suspensa 60x80 Cor Da Estrutura Preto Cor Da Planta Preto', '2-tela-aramada-painel-jardim-vertical-horta-suspensa-60x80-cor-da-estrutura-preto-cor-da-planta-preto', 'Cor da planta: Preto. | Tela aramada com dimensões de 60x80 cm, ideal para otimizar espaços. | Produto artificial, sem necessidade de manutenção. | Estrutura na cor preta, adicionando elegância ao ambiente. | Adequado para ambientes internos e externos como cozinha, quarto e quintal.', 59.99, 55.19, 12, 'VER-0119', 'real-verduras-119.webp', 'aprovado', 0, 0, '2026-03-09 13:35:31', '2026-03-09 13:35:31'),
 (33, 1, 4, 'Tênis Rainha Iate Iv | Frete grátis', 't-enis-rainha-iate-iv-frete-gr-atis', 'Desenho do tecido: Lisa. | Ano de lançamento: 2023. | Tem cadarços para um ajuste confortável. | Calcanhar curto. | Sola antiderrapante. | Design lisa. | Interior de tecido. | A entressola de borracha eva proporciona maior amortecimento e estabilidade na pisada. | Língua acolchoada. | Com talão acolchoado.', 124.39, 114.44, 60, 'MOD-7072', 'real-moda-33.webp', 'aprovado', 0, 0, '2026-03-09 13:39:25', '2026-03-09 13:39:25'),
-(34, 2, 2, 'Anador 500mg 20 comprimidos', 'anador-500mg-20-comprimidos', 'Analgesico para alivio de dores e febre. Uso adulto conforme orientacao profissional.', 18.90, 17.01, 36, 'FAR-FP-0034', 'farmacia-anador.jpg', 'aprovado', 0, 1, '2026-03-09 14:25:56', '2026-03-09 15:25:50'),
-(35, 2, 2, 'Aspirina 500mg 10 comprimidos', 'aspirina-500mg-10-comprimidos', 'Medicamento para alivio de dores leves e moderadas, com acao anti-inflamatoria.', 15.40, 13.86, 37, 'FAR-FP-0035', 'farmacia-aspirina.jpg', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
+(34, 2, 2, 'Anador 500mg 20 comprimidos', 'anador-500mg-20-comprimidos', 'Analgesico para alivio de dores e febre. Uso adulto conforme orientacao profissional.', 18.90, 17.01, 35, 'FAR-FP-0034', 'farmacia-anador.jpg', 'aprovado', 0, 2, '2026-03-09 14:25:56', '2026-03-10 10:18:41'),
+(35, 2, 2, 'Aspirina 500mg 10 comprimidos', 'aspirina-500mg-10-comprimidos', 'Medicamento para alivio de dores leves e moderadas, com acao anti-inflamatoria.', 15.40, 13.86, 36, 'FAR-FP-0035', 'farmacia-aspirina.jpg', 'aprovado', 0, 1, '2026-03-09 14:25:56', '2026-03-10 10:18:58'),
 (36, 2, 2, 'Pomada Dermatologica Reparadora 45g', 'pomada-dermatologica-reparadora-45g', 'Pomada de uso topico para cuidado da pele com acao calmante e hidratante.', 27.90, 25.11, 45, 'FAR-FP-0036', 'farmacia-pomada-1.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (37, 2, 2, 'Pomada Antifungica 30g', 'pomada-antifungica-30g', 'Auxilia no tratamento topico de irritacoes e micoses superficiais da pele.', 31.50, 28.35, 61, 'FAR-FP-0037', 'farmacia-pomada-2.webp', 'aprovado', 1, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (38, 2, 2, 'Pomada Cicatrizante 60g', 'pomada-cicatrizante-60g', 'Cuidado diario para a pele sensibilizada, ajudando na recuperacao da barreira cutanea.', 34.20, 30.78, 16, 'FAR-FP-0038', 'farmacia-pomada-3.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
@@ -256,7 +282,8 @@ INSERT INTO `produtos` (`id`, `loja_id`, `categoria_id`, `nome`, `slug`, `descri
 (46, 2, 16, 'Desodorante Aerosol 150ml', 'desodorante-aerosol-150ml', 'Protecao antitranspirante com fragrancia suave e secagem rapida.', 13.90, 12.51, 12, 'HIG-FP-0046', 'farmacia-anador.jpg', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (47, 2, 16, 'Perfume Feminino Floral 100ml', 'perfume-feminino-floral-100ml', 'Fragrancia floral com notas adocicadas e fixacao prolongada para uso diario.', 69.90, 62.91, 19, 'HIG-FP-0047', 'farmacia-pomada-2.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (48, 2, 16, 'Perfume Masculino Amadeirado 100ml', 'perfume-masculino-amadeirado-100ml', 'Fragrancia amadeirada com toque citrico, ideal para uso casual e noturno.', 74.90, 67.41, 13, 'HIG-FP-0048', 'farmacia-pomada-3.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
-(49, 2, 16, 'Kit Higiene Pessoal Viagem 5 Itens', 'kit-higiene-pessoal-viagem-5-itens', 'Kit com itens essenciais para rotina de higiene em casa ou viagem.', 29.90, 26.91, 46, 'HIG-FP-0049', 'farmacia-cha-akabe.webp', 'aprovado', 1, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56');
+(49, 2, 16, 'Kit Higiene Pessoal Viagem 5 Itens', 'kit-higiene-pessoal-viagem-5-itens', 'Kit com itens essenciais para rotina de higiene em casa ou viagem.', 29.90, 26.91, 46, 'HIG-FP-0049', 'farmacia-cha-akabe.webp', 'aprovado', 1, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
+(0, 0, 27, 'Notebook LG', 'notebook-lg', 'Notebook LG Super', 2890.00, 2590.00, 5, 'notebook, lg', '7e14a6784d7805445ef2ece04b653630.jpg', 'aprovado', 1, 0, '2026-03-10 10:34:46', '2026-03-10 10:34:46');
 
 -- --------------------------------------------------------
 
@@ -270,6 +297,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(150) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `telefone` varchar(25) DEFAULT NULL,
+  `endereco_entrega` text DEFAULT NULL,
   `role` enum('admin','lojista','consumidor') NOT NULL DEFAULT 'consumidor',
   `status` enum('ativo','inativo','bloqueado') NOT NULL DEFAULT 'ativo',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
@@ -280,180 +308,9 @@ CREATE TABLE `usuarios` (
 -- Despejando dados para a tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `telefone`, `role`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Administrador', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', NULL, 'admin', 'ativo', '2026-03-09 12:13:51', '2026-03-09 12:13:51'),
-(2, 'Lojista Seed Real', 'lojista.seed@capelamarket.com', '$2y$10$Kgs1Qd5BEIMGHZRh8KuYcOmBZ53Pg3GeLjJofb712oMvAXql4vBkm', '(79) 99999-9999', 'lojista', 'ativo', '2026-03-09 13:24:18', '2026-03-09 13:24:18'),
-(3, 'Lojista Farm?cia Popular', 'lojista.farmaciapopular@capelamarket.com', '$2y$10$5ZOpZD0cHfGQ75BsM8kVU.7H9QeBdZMePxGva6psOcKqfT56/vru6', '79 99838-4857', 'lojista', 'ativo', '2026-03-09 13:55:22', '2026-03-09 13:55:22');
-
---
--- Índices para tabelas despejadas
---
-
---
--- Índices de tabela `categorias`
---
-ALTER TABLE `categorias`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`),
-  ADD KEY `idx_categorias_slug` (`slug`);
-
---
--- Índices de tabela `favoritos`
---
-ALTER TABLE `favoritos`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_favoritos_usuario_produto` (`usuario_id`,`produto_id`),
-  ADD KEY `fk_favoritos_produto` (`produto_id`);
-
---
--- Índices de tabela `imagens_produtos`
---
-ALTER TABLE `imagens_produtos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_imagens_produto_ordem` (`produto_id`,`ordem`);
-
---
--- Índices de tabela `lojas`
---
-ALTER TABLE `lojas`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`),
-  ADD KEY `fk_lojas_usuario` (`usuario_id`),
-  ADD KEY `idx_lojas_status_destaque` (`status`,`destaque`),
-  ADD KEY `idx_lojas_bairro` (`bairro`),
-  ADD KEY `idx_lojas_slug` (`slug`);
-
---
--- Índices de tabela `pedidos`
---
-ALTER TABLE `pedidos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_pedidos_loja_status` (`loja_id`,`status`),
-  ADD KEY `idx_pedidos_usuario` (`usuario_id`);
-
---
--- Índices de tabela `pedido_itens`
---
-ALTER TABLE `pedido_itens`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_pedido_itens_pedido` (`pedido_id`),
-  ADD KEY `idx_pedido_itens_produto` (`produto_id`);
-
---
--- Índices de tabela `produtos`
---
-ALTER TABLE `produtos`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`),
-  ADD KEY `idx_produtos_status_destaque` (`status`,`destaque`),
-  ADD KEY `idx_produtos_loja` (`loja_id`),
-  ADD KEY `idx_produtos_categoria` (`categoria_id`),
-  ADD KEY `idx_produtos_slug` (`slug`);
-ALTER TABLE `produtos` ADD FULLTEXT KEY `ftx_produtos_nome_descricao` (`nome`,`descricao`);
-
---
--- Índices de tabela `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `idx_usuarios_role_status` (`role`,`status`);
-
---
--- AUTO_INCREMENT para tabelas despejadas
---
-
---
--- AUTO_INCREMENT de tabela `categorias`
---
-ALTER TABLE `categorias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
---
--- AUTO_INCREMENT de tabela `favoritos`
---
-ALTER TABLE `favoritos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `imagens_produtos`
---
-ALTER TABLE `imagens_produtos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `lojas`
---
-ALTER TABLE `lojas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de tabela `pedidos`
---
-ALTER TABLE `pedidos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `pedido_itens`
---
-ALTER TABLE `pedido_itens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `produtos`
---
-ALTER TABLE `produtos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
-
---
--- AUTO_INCREMENT de tabela `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Restrições para tabelas despejadas
---
-
---
--- Restrições para tabelas `favoritos`
---
-ALTER TABLE `favoritos`
-  ADD CONSTRAINT `fk_favoritos_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_favoritos_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
-
---
--- Restrições para tabelas `imagens_produtos`
---
-ALTER TABLE `imagens_produtos`
-  ADD CONSTRAINT `fk_imagens_produtos_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`) ON DELETE CASCADE;
-
---
--- Restrições para tabelas `lojas`
---
-ALTER TABLE `lojas`
-  ADD CONSTRAINT `fk_lojas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
-
---
--- Restrições para tabelas `pedidos`
---
-ALTER TABLE `pedidos`
-  ADD CONSTRAINT `fk_pedidos_loja` FOREIGN KEY (`loja_id`) REFERENCES `lojas` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_pedidos_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
-
---
--- Restrições para tabelas `pedido_itens`
---
-ALTER TABLE `pedido_itens`
-  ADD CONSTRAINT `fk_pedido_itens_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_pedido_itens_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`);
-
---
--- Restrições para tabelas `produtos`
---
-ALTER TABLE `produtos`
-  ADD CONSTRAINT `fk_produtos_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`),
-  ADD CONSTRAINT `fk_produtos_loja` FOREIGN KEY (`loja_id`) REFERENCES `lojas` (`id`) ON DELETE CASCADE;
+INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `telefone`, `endereco_entrega`, `role`, `status`, `created_at`, `updated_at`) VALUES
+(0, 'João Rezende', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '(79) 99924-8114', 'Rua Quirino, 1100', 'admin', 'ativo', '2026-03-10 10:17:19', '2026-03-10 10:18:58'),
+(0, 'João Rezende', 'rapware@gmail.com', '$2y$10$RZcGIcH5NMGMiyPht7ZsNuEu.46hux8HGl5A961EhL5BlPYoSHl5G', '(79) 99924-8114', NULL, 'consumidor', 'ativo', '2026-03-10 10:17:44', '2026-03-10 10:17:44');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

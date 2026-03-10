@@ -3,13 +3,13 @@ class VendorController extends Controller
 {
     public function dashboard(): void
     {
-        AuthMiddleware::handle('lojista');
+        AuthMiddleware::handle(['consumidor', 'lojista']);
         $store = (new Store())->byUser((int) Auth::user()['id']);
         $products = $store ? (new Product())->byStore((int) $store['id']) : [];
         $orders = $store ? (new Order())->byStore((int) $store['id']) : [];
 
         $this->render('vendor/dashboard', [
-            'title' => 'Painel do lojista',
+            'title' => 'Painel de vendas',
             'store' => $store,
             'products' => $products,
             'orders' => $orders,
@@ -18,7 +18,7 @@ class VendorController extends Controller
 
     public function orderDetail(string $id): void
     {
-        AuthMiddleware::handle('lojista');
+        AuthMiddleware::handle(['consumidor', 'lojista']);
         $store = (new Store())->byUser((int) Auth::user()['id']);
 
         if (!$store) {

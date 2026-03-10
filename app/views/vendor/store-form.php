@@ -4,6 +4,12 @@
         <input type="hidden" name="_token" value="<?= e(Csrf::token()) ?>">
         <input type="text" name="nome_loja" value="<?= e($store['nome_loja'] ?? '') ?>" placeholder="Nome da loja" class="rounded-2xl border border-slate-200 px-4 py-3 md:col-span-2" required>
         <textarea name="descricao" placeholder="Descricao" class="rounded-2xl border border-slate-200 px-4 py-3 md:col-span-2"><?= e($store['descricao'] ?? '') ?></textarea>
+        <select name="documento_tipo" class="rounded-2xl border border-slate-200 px-4 py-3" required>
+            <option value="">Documento do vendedor</option>
+            <option value="CPF" <?= (($store['documento_tipo'] ?? '') === 'CPF') ? 'selected' : '' ?>>CPF</option>
+            <option value="CNPJ" <?= (($store['documento_tipo'] ?? '') === 'CNPJ') ? 'selected' : '' ?>>CNPJ</option>
+        </select>
+        <input type="text" name="documento_numero" value="<?= e($store['documento_numero'] ?? '') ?>" placeholder="Numero do documento" class="rounded-2xl border border-slate-200 px-4 py-3" required>
         <input type="text" name="telefone" value="<?= e($store['telefone'] ?? '') ?>" placeholder="Telefone" class="rounded-2xl border border-slate-200 px-4 py-3" required>
         <input type="text" name="whatsapp" value="<?= e($store['whatsapp'] ?? '') ?>" placeholder="WhatsApp" class="rounded-2xl border border-slate-200 px-4 py-3" required>
         <select name="vende_online" class="rounded-2xl border border-slate-200 px-4 py-3">

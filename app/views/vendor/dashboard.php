@@ -1,14 +1,14 @@
 <section>
     <div class="flex items-center justify-between">
         <div>
-            <p class="text-sm font-semibold text-blue-600">Painel do lojista</p>
+            <p class="text-sm font-semibold text-blue-600">Painel de vendas</p>
             <h1 class="text-3xl font-black">Resumo da operacao</h1>
         </div>
         <a href="<?= e(url('lojista/produtos/novo')) ?>" class="rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white">Novo produto</a>
     </div>
     <?php if (!$store): ?>
         <div class="mt-8 rounded-3xl bg-amber-100 p-6 text-amber-800">
-            Sua conta de lojista ainda nao possui loja cadastrada. <a href="<?= e(url('lojista/loja')) ?>" class="font-bold underline">Criar loja agora</a>.
+            Sua conta ainda nao possui loja cadastrada. <a href="<?= e(url('lojista/loja')) ?>" class="font-bold underline">Criar loja agora</a>.
         </div>
     <?php else: ?>
         <div class="mt-8 grid gap-5 md:grid-cols-3">
