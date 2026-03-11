@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/03/2026 às 23:20
+-- Tempo de geração: 11/03/2026 às 01:23
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -108,6 +108,23 @@ CREATE TABLE `imagens_produtos` (
   `ordem` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `imagens_produtos`
+--
+
+INSERT INTO `imagens_produtos` (`id`, `produto_id`, `arquivo`, `ordem`, `created_at`) VALUES
+(1, 34, 'ee076523c482d4c18e80aa23dd37c4c3.webp', 0, '2026-03-10 23:41:32'),
+(2, 34, '86b579a2250f952e3d3d9894ed17e1fd.webp', 1, '2026-03-10 23:41:32'),
+(3, 34, '0581ccc1511337a4aa871519dae70704.webp', 2, '2026-03-10 23:41:32'),
+(4, 34, 'd96f6f686f573cacaf99d2f4669ba0ca.webp', 3, '2026-03-10 23:41:32'),
+(12, 51, '782283c52a62d03131354ca8dfd467d9.jpg', 0, '2026-03-10 23:49:37'),
+(13, 51, '89b5054e4a7a68b4482e3abaf0f2271e.webp', 1, '2026-03-10 23:49:37'),
+(14, 51, '9ec1b23202fe915ea314f355207e0338.webp', 2, '2026-03-10 23:49:37'),
+(15, 51, '398058b3f2c150931020d5f13fe34895.webp', 3, '2026-03-10 23:49:37'),
+(16, 52, 'd574d8435b28f310f25e8022fb4c747e.webp', 0, '2026-03-11 00:00:30'),
+(17, 52, '4bea940ea0057c638c57c5d9af3d0158.webp', 1, '2026-03-11 00:00:30'),
+(18, 52, '57447893257c036e5dd0f28cf6b8401d.webp', 2, '2026-03-11 00:00:30');
 
 -- --------------------------------------------------------
 
@@ -279,10 +296,10 @@ INSERT INTO `produtos` (`id`, `loja_id`, `categoria_id`, `nome`, `slug`, `descri
 (31, 1, 28, 'Smartphone Samsung Galaxy A36 5G 256GB 8GB RAM | Frete grátis', 'smartphone-samsung-galaxy-a36-5g-256gb-8gb-ram-frete-gr-atis', 'Dispositivo desbloqueado para que você escolha a companhia telefônica de sua preferência. | Compatível com redes 5G. | Tela de 6.7&quot;. | Tem 3 câmeras traseiras de 50mpx/8mpx/5mpx. | Câmeras frontais de 12Mpx. | Bateria de 5 Ah. | Memória interna de 256GB.  | Resistente à água. | Com reconhecimento facial e sensor de impressão digital. | Resistente à poeira.', 1799.00, 1655.08, 8, 'TEL-0118', 'real-telefonia-118.webp', 'aprovado', 0, 0, '2026-03-09 13:35:22', '2026-03-09 13:35:22'),
 (32, 1, 12, '2 Tela Aramada Painel Jardim Vertical Horta Suspensa 60x80 Cor Da Estrutura Preto Cor Da Planta Preto', '2-tela-aramada-painel-jardim-vertical-horta-suspensa-60x80-cor-da-estrutura-preto-cor-da-planta-preto', 'Cor da planta: Preto. | Tela aramada com dimensões de 60x80 cm, ideal para otimizar espaços. | Produto artificial, sem necessidade de manutenção. | Estrutura na cor preta, adicionando elegância ao ambiente. | Adequado para ambientes internos e externos como cozinha, quarto e quintal.', 59.99, 55.19, 12, 'VER-0119', 'real-verduras-119.webp', 'aprovado', 0, 0, '2026-03-09 13:35:31', '2026-03-09 13:35:31'),
 (33, 1, 4, 'Tênis Rainha Iate Iv | Frete grátis', 't-enis-rainha-iate-iv-frete-gr-atis', 'Desenho do tecido: Lisa. | Ano de lançamento: 2023. | Tem cadarços para um ajuste confortável. | Calcanhar curto. | Sola antiderrapante. | Design lisa. | Interior de tecido. | A entressola de borracha eva proporciona maior amortecimento e estabilidade na pisada. | Língua acolchoada. | Com talão acolchoado.', 124.39, 114.44, 60, 'MOD-7072', 'real-moda-33.webp', 'aprovado', 0, 0, '2026-03-09 13:39:25', '2026-03-09 13:39:25'),
-(34, 2, 2, 'Anador 500mg 20 comprimidos', 'anador-500mg-20-comprimidos', 'Analgesico para alivio de dores e febre. Uso adulto conforme orientacao profissional.', 18.90, 17.01, 33, 'FAR-FP-0034', 'farmacia-anador.jpg', 'aprovado', 0, 4, '2026-03-09 14:25:56', '2026-03-10 22:18:43'),
-(35, 2, 2, 'Aspirina 500mg 10 comprimidos', 'aspirina-500mg-10-comprimidos', 'Medicamento para alivio de dores leves e moderadas, com acao anti-inflamatoria.', 15.40, 13.86, 34, 'FAR-FP-0035', 'farmacia-aspirina.jpg', 'aprovado', 0, 3, '2026-03-09 14:25:56', '2026-03-10 22:18:43'),
+(34, 2, 2, 'Anador 500mg 20 comprimidos', 'anador-500mg-20-comprimidos', 'Analgesico para alivio de dores e febre. Uso adulto conforme orientacao profissional.', 18.90, 17.01, 33, 'FAR-FP-0034', 'ee076523c482d4c18e80aa23dd37c4c3.webp', 'aprovado', 0, 9, '2026-03-09 14:25:56', '2026-03-10 23:55:33'),
+(35, 2, 2, 'Aspirina 500mg 10 comprimidos', 'aspirina-500mg-10-comprimidos', 'Medicamento para alivio de dores leves e moderadas, com acao anti-inflamatoria.', 15.40, 13.86, 34, 'FAR-FP-0035', 'farmacia-aspirina.jpg', 'aprovado', 0, 7, '2026-03-09 14:25:56', '2026-03-10 23:55:28'),
 (36, 2, 2, 'Pomada Dermatologica Reparadora 45g', 'pomada-dermatologica-reparadora-45g', 'Pomada de uso topico para cuidado da pele com acao calmante e hidratante.', 27.90, 25.11, 44, 'FAR-FP-0036', 'farmacia-pomada-1.webp', 'aprovado', 0, 1, '2026-03-09 14:25:56', '2026-03-10 21:25:41'),
-(37, 2, 2, 'Pomada Antifungica 30g', 'pomada-antifungica-30g', 'Auxilia no tratamento topico de irritacoes e micoses superficiais da pele.', 31.50, 28.35, 60, 'FAR-FP-0037', 'farmacia-pomada-2.webp', 'aprovado', 1, 3, '2026-03-09 14:25:56', '2026-03-10 22:18:43'),
+(37, 2, 2, 'Pomada Antifungica 30g', 'pomada-antifungica-30g', 'Auxilia no tratamento topico de irritacoes e micoses superficiais da pele.', 31.50, 28.35, 60, 'FAR-FP-0037', 'farmacia-pomada-2.webp', 'aprovado', 1, 4, '2026-03-09 14:25:56', '2026-03-10 23:00:36'),
 (38, 2, 2, 'Pomada Cicatrizante 60g', 'pomada-cicatrizante-60g', 'Cuidado diario para a pele sensibilizada, ajudando na recuperacao da barreira cutanea.', 34.20, 30.78, 16, 'FAR-FP-0038', 'farmacia-pomada-3.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (39, 2, 2, 'Cha Funcional Akabe 200g', 'cha-funcional-akabe-200g', 'Blend herbal para rotina de bem-estar, sabor suave e preparo pratico.', 24.90, 22.41, 14, 'FAR-FP-0039', 'farmacia-cha-akabe.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (40, 2, 16, 'Shampoo Anticaspa 400ml', 'shampoo-anticaspa-400ml', 'Limpeza profunda do couro cabeludo com formula de uso diario.', 22.90, 20.61, 15, 'HIG-FP-0040', 'farmacia-cha-akabe.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
@@ -294,7 +311,9 @@ INSERT INTO `produtos` (`id`, `loja_id`, `categoria_id`, `nome`, `slug`, `descri
 (46, 2, 16, 'Desodorante Aerosol 150ml', 'desodorante-aerosol-150ml', 'Protecao antitranspirante com fragrancia suave e secagem rapida.', 13.90, 12.51, 12, 'HIG-FP-0046', 'farmacia-anador.jpg', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (47, 2, 16, 'Perfume Feminino Floral 100ml', 'perfume-feminino-floral-100ml', 'Fragrancia floral com notas adocicadas e fixacao prolongada para uso diario.', 69.90, 62.91, 19, 'HIG-FP-0047', 'farmacia-pomada-2.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
 (48, 2, 16, 'Perfume Masculino Amadeirado 100ml', 'perfume-masculino-amadeirado-100ml', 'Fragrancia amadeirada com toque citrico, ideal para uso casual e noturno.', 74.90, 67.41, 13, 'HIG-FP-0048', 'farmacia-pomada-3.webp', 'aprovado', 0, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
-(49, 2, 16, 'Kit Higiene Pessoal Viagem 5 Itens', 'kit-higiene-pessoal-viagem-5-itens', 'Kit com itens essenciais para rotina de higiene em casa ou viagem.', 29.90, 26.91, 46, 'HIG-FP-0049', 'farmacia-cha-akabe.webp', 'aprovado', 1, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56');
+(49, 2, 16, 'Kit Higiene Pessoal Viagem 5 Itens', 'kit-higiene-pessoal-viagem-5-itens', 'Kit com itens essenciais para rotina de higiene em casa ou viagem.', 29.90, 26.91, 46, 'HIG-FP-0049', 'farmacia-cha-akabe.webp', 'aprovado', 1, 0, '2026-03-09 14:25:56', '2026-03-09 14:25:56'),
+(51, 2, 35, 'TESTE 3', 'teste-3', 'teste3', 23.00, 21.00, 23, 'FAR-FP-0034', '782283c52a62d03131354ca8dfd467d9.jpg', 'aprovado', 0, 0, '2026-03-10 23:42:36', '2026-03-10 23:49:37'),
+(52, 2, 2, 'Shampoo Coriston', 'shampoo-coriston', 'Shampoo de babosa cor & ton para cabelos oleosos, deixa sedoso e macio', 23.00, 16.00, 34, 'FAR-002-SHAMPO-6814', 'd574d8435b28f310f25e8022fb4c747e.webp', 'aprovado', 0, 0, '2026-03-11 00:00:30', '2026-03-11 00:00:30');
 
 -- --------------------------------------------------------
 
@@ -321,9 +340,9 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `telefone`, `endereco_entrega`, `role`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'João Rezende', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '(79) 99924-8114', 'Rua Quirino, 1100', 'admin', 'ativo', '2026-03-10 10:17:19', '2026-03-10 10:18:58'),
-(2, 'Loja Tem de Tudo', 'lojista-loja-tem-de-tudo@local.invalid', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '(79) 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 22:05:03'),
-(3, 'Farmacia Popular', 'lojista-farmacia-popular@local.invalid', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '79 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 22:05:20'),
-(8, 'Elson Ribeiro Santos', 'elson@gmail.com', '$2y$10$A3OdKrTJ1M9K3KljA6sZEuZy7.xqi2gINABY/SDMe3nomtWTmYMEG', '79 99924-8114', 'Rua da palmeira, 345', 'consumidor', 'ativo', '2026-03-10 21:05:26', '2026-03-10 22:18:43');
+(2, 'Loja Tem de Tudo', 'lojista-loja-tem-de-tudo@local.invalid', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '(79) 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 23:25:46'),
+(3, 'Farmacia Popular', 'lojista-farmacia-popular@local.invalid', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '79 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 23:25:52'),
+(8, 'Elson Ribeiro Santos', 'elson@gmail.com', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '79 99924-8114', 'Rua da palmeira, 345', 'consumidor', 'ativo', '2026-03-10 21:05:26', '2026-03-10 23:26:01');
 
 --
 -- Índices para tabelas despejadas
@@ -411,7 +430,7 @@ ALTER TABLE `favoritos`
 -- AUTO_INCREMENT de tabela `imagens_produtos`
 --
 ALTER TABLE `imagens_produtos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de tabela `lojas`
@@ -435,7 +454,7 @@ ALTER TABLE `pedido_itens`
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
