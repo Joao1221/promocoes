@@ -114,10 +114,7 @@
                 </div>
             </div>
         <?php endif; ?>
-        <label class="flex items-center gap-3 text-sm md:col-span-2">
-            <input type="checkbox" name="destaque" value="1" <?= !empty($product['destaque']) ? 'checked' : '' ?>>
-            Produto em destaque
-        </label>
+        <p class="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600 md:col-span-2">O destaque de produto e controlado pelo painel administrativo.</p>
         <button class="rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white md:col-span-2">Salvar produto</button>
     </form>
 </section>

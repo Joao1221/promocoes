@@ -98,9 +98,68 @@ class Order extends Model
 
     public function metrics(): array
     {
-        return [
-            'pedidos' => (int) $this->db->query('SELECT COUNT(*) FROM pedidos')->fetchColumn(),
-            'faturamento' => (float) $this->db->query('SELECT COALESCE(SUM(total), 0) FROM pedidos')->fetchColumn(),
+        $base = $this->db->query(
+            'SELECT
+                COUNT(*) AS pedidos,
+                COALESCE(SUM(total), 0) AS faturamento,
+                COALESCE(AVG(total), 0) AS ticket_medio,
+                SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) AS pedidos_hoje
+             FROM pedidos'
+        )->fetch() ?: [];
+
+        $statusTotals = [
+            'novo' => 0,
+            'em_preparo' => 0,
+            'enviado' => 0,
+            'concluido' => 0,
+            'cancelado' => 0,
         ];
+
+        $rows = $this->db->query('SELECT status, COUNT(*) AS total FROM pedidos GROUP BY status')->fetchAll();
+        foreach ($rows as $row) {
+            $status = (string) ($row['status'] ?? '');
+            if (array_key_exists($status, $statusTotals)) {
+                $statusTotals[$status] = (int) ($row['total'] ?? 0);
+            }
+        }
+
+        return [
+            'pedidos' => (int) ($base['pedidos'] ?? 0),
+            'faturamento' => (float) ($base['faturamento'] ?? 0),
+            'ticket_medio' => (float) ($base['ticket_medio'] ?? 0),
+            'pedidos_hoje' => (int) ($base['pedidos_hoje'] ?? 0),
+            'status' => $statusTotals,
+        ];
+    }
+
+    public function adminRecent(int $limit = 150): array
+    {
+        $limit = max(1, min(1000, $limit));
+        $stmt = $this->db->prepare(
+            'SELECT
+                p.id,
+                p.loja_id,
+                p.usuario_id,
+                p.nome_cliente,
+                p.telefone_cliente,
+                p.endereco_entrega,
+                p.forma_pagamento,
+                p.total,
+                p.status,
+                p.created_at,
+                u.nome AS comprador_nome,
+                u.email AS comprador_email,
+                l.nome_loja,
+                l.slug AS loja_slug
+             FROM pedidos p
+             INNER JOIN usuarios u ON u.id = p.usuario_id
+             INNER JOIN lojas l ON l.id = p.loja_id
+             ORDER BY p.created_at DESC
+             LIMIT :limit'
+        );
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

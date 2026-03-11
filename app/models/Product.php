@@ -121,6 +121,54 @@ class Product extends Model
         return $stmt->fetchAll();
     }
 
+    public function suggestions(string $query, int $limit = 8): array
+    {
+        $query = trim($query);
+        if ($query === '') {
+            return [];
+        }
+
+        $limit = max(1, min(15, $limit));
+        $stmt = $this->db->prepare(
+            'SELECT p.nome
+             FROM produtos p
+             INNER JOIN lojas l ON l.id = p.loja_id
+             WHERE p.status = "aprovado"
+               AND l.status = "aprovada"
+               AND p.nome LIKE :query
+             ORDER BY (p.nome LIKE :prefix) DESC, p.views DESC, p.updated_at DESC, p.nome ASC
+             LIMIT 50'
+        );
+        $stmt->execute([
+            'query' => '%' . $query . '%',
+            'prefix' => $query . '%',
+        ]);
+
+        $items = [];
+        $seen = [];
+
+        foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $name) {
+            $name = trim((string) $name);
+            if ($name === '') {
+                continue;
+            }
+
+            $key = function_exists('mb_strtolower') ? mb_strtolower($name) : strtolower($name);
+            if (isset($seen[$key])) {
+                continue;
+            }
+
+            $seen[$key] = true;
+            $items[] = $name;
+
+            if (count($items) >= $limit) {
+                break;
+            }
+        }
+
+        return $items;
+    }
+
     public function findBySlug(string $slug): ?array
     {
         $stmt = $this->db->prepare(
@@ -137,6 +185,13 @@ class Product extends Model
         }
 
         return $this->attachImages($product);
+    }
+
+    public function find(int $id): ?array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM produtos WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch() ?: null;
     }
 
     public function byStore(int $storeId): array
@@ -392,6 +447,141 @@ class Product extends Model
     {
         $stmt = $this->db->prepare('UPDATE produtos SET status = "aprovado", updated_at = NOW() WHERE id = :id');
         $stmt->execute(['id' => $id]);
+    }
+
+    public function featuredCount(): int
+    {
+        return (int) $this->db->query(
+            'SELECT COUNT(*)
+             FROM produtos p
+             INNER JOIN lojas l ON l.id = p.loja_id
+             WHERE p.destaque = 1 AND p.status = "aprovado" AND l.status = "aprovada"'
+        )->fetchColumn();
+    }
+
+    public function setFeatured(int $id, bool $featured): bool
+    {
+        $stmt = $this->db->prepare(
+            'SELECT p.id, p.status AS produto_status, l.status AS loja_status
+             FROM produtos p
+             INNER JOIN lojas l ON l.id = p.loja_id
+             WHERE p.id = :id
+             LIMIT 1'
+        );
+        $stmt->execute(['id' => $id]);
+        $product = $stmt->fetch();
+        if (!$product) {
+            return false;
+        }
+
+        if ($featured) {
+            if (($product['produto_status'] ?? '') !== 'aprovado' || ($product['loja_status'] ?? '') !== 'aprovada') {
+                return false;
+            }
+        }
+
+        $updateStmt = $this->db->prepare('UPDATE produtos SET destaque = :destaque, updated_at = NOW() WHERE id = :id');
+        return $updateStmt->execute([
+            'id' => $id,
+            'destaque' => $featured ? 1 : 0,
+        ]);
+    }
+
+    public function adminOverview(int $limit = 300): array
+    {
+        $limit = max(1, min(1000, $limit));
+        $stmt = $this->db->prepare(
+            'SELECT
+                p.*,
+                l.nome_loja,
+                l.slug AS loja_slug,
+                l.status AS loja_status,
+                c.nome AS categoria_nome,
+                COALESCE(vd.total_vendas, 0) AS total_vendas,
+                COALESCE(vd.receita, 0) AS receita
+             FROM produtos p
+             INNER JOIN lojas l ON l.id = p.loja_id
+             INNER JOIN categorias c ON c.id = p.categoria_id
+             LEFT JOIN (
+                SELECT pi.produto_id, COALESCE(SUM(pi.quantidade), 0) AS total_vendas, COALESCE(SUM(pi.subtotal), 0) AS receita
+                FROM pedido_itens pi
+                GROUP BY pi.produto_id
+             ) vd ON vd.produto_id = p.id
+             ORDER BY p.destaque DESC, vd.total_vendas DESC, p.views DESC, p.created_at DESC
+             LIMIT :limit'
+        );
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function homeShowcase(int $limit = 12): array
+    {
+        $limit = max(1, min(24, $limit));
+        $selected = $this->selectedForHome($limit);
+        if (count($selected) >= $limit) {
+            return array_slice($selected, 0, $limit);
+        }
+
+        $selectedIds = array_map(static fn (array $product) => (int) ($product['id'] ?? 0), $selected);
+        $fallback = $this->featuredFallback($limit - count($selected), $selectedIds);
+        return array_merge($selected, $fallback);
+    }
+
+    private function selectedForHome(int $limit): array
+    {
+        try {
+            $stmt = $this->db->prepare(
+                'SELECT p.*, l.nome_loja, l.slug AS loja_slug, c.nome AS categoria_nome, h.posicao AS home_posicao
+                 FROM home_produtos_destaque h
+                 INNER JOIN produtos p ON p.id = h.produto_id
+                 INNER JOIN lojas l ON l.id = p.loja_id
+                 INNER JOIN categorias c ON c.id = p.categoria_id
+                 WHERE p.status = "aprovado" AND l.status = "aprovada" AND h.posicao BETWEEN 1 AND :limit
+                 ORDER BY h.posicao ASC'
+            );
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException) {
+            return [];
+        }
+    }
+
+    private function featuredFallback(int $limit, array $excludeIds = []): array
+    {
+        if ($limit <= 0) {
+            return [];
+        }
+
+        $sql = 'SELECT p.*, l.nome_loja, l.slug AS loja_slug, c.nome AS categoria_nome
+                FROM produtos p
+                INNER JOIN lojas l ON l.id = p.loja_id
+                INNER JOIN categorias c ON c.id = p.categoria_id
+                WHERE p.status = "aprovado" AND l.status = "aprovada"';
+        $params = [];
+
+        if ($excludeIds !== []) {
+            $excludeIds = array_values(array_unique(array_filter(array_map('intval', $excludeIds), static fn (int $id) => $id > 0)));
+            if ($excludeIds !== []) {
+                $placeholders = [];
+                foreach ($excludeIds as $index => $value) {
+                    $key = ':exclude_' . $index;
+                    $placeholders[] = $key;
+                    $params[$key] = $value;
+                }
+                $sql .= ' AND p.id NOT IN (' . implode(', ', $placeholders) . ')';
+            }
+        }
+
+        $sql .= ' ORDER BY p.destaque DESC, p.views DESC, p.created_at DESC LIMIT :limit';
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function updateSku(int $id, string $sku): void

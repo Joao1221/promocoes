@@ -36,6 +36,7 @@ $router->post('/cadastro', [AuthController::class, 'register']);
 $router->post('/logout', [AuthController::class, 'logout']);
 
 $router->get('/buscar', [ProductController::class, 'search']);
+$router->get('/buscar/sugestoes', [ProductController::class, 'suggestions']);
 $router->get('/produto/{slug}', [ProductController::class, 'show']);
 $router->get('/loja/{slug}', [StoreController::class, 'show']);
 
@@ -55,10 +56,14 @@ $router->get('/lojista/produtos/{id}/editar', [ProductController::class, 'vendor
 $router->post('/lojista/produtos', [ProductController::class, 'save']);
 
 $router->get('/admin', [AdminController::class, 'dashboard']);
+$router->get('/admin/destaques', [AdminController::class, 'highlights']);
 $router->get('/admin/categorias', [AdminController::class, 'categories']);
 $router->post('/admin/categorias/icones/aplicar', [AdminController::class, 'applyCategoryIcons']);
 $router->post('/admin/lojas/{id}/aprovar', [AdminController::class, 'approveStore']);
 $router->post('/admin/produtos/{id}/aprovar', [AdminController::class, 'approveProduct']);
+$router->post('/admin/lojas/{id}/destaque', [AdminController::class, 'setStoreFeatured']);
+$router->post('/admin/produtos/{id}/destaque', [AdminController::class, 'setProductFeatured']);
+$router->post('/admin/destaques/home-produtos', [AdminController::class, 'saveHomeFeaturedProducts']);
 $router->post('/admin/categorias', [AdminController::class, 'storeCategory']);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';

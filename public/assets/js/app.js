@@ -81,6 +81,147 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const searchAutocompleteInputs = document.querySelectorAll('[data-search-autocomplete]');
+    searchAutocompleteInputs.forEach((input) => {
+        const listId = input.getAttribute('list');
+        const suggestionsUrl = input.dataset.suggestionsUrl || '';
+        const datalist = listId ? document.getElementById(listId) : null;
+        const form = input.closest('form');
+
+        if (!datalist || !suggestionsUrl || !form) {
+            return;
+        }
+
+        let debounceTimer = null;
+        let activeController = null;
+        let submitting = false;
+
+        const optionValues = () => Array.from(datalist.querySelectorAll('option')).map((option) => option.value.trim());
+        const submitIfSuggestionSelected = () => {
+            if (submitting) {
+                return true;
+            }
+
+            const value = input.value.trim();
+            if (value.length < 2) {
+                return false;
+            }
+
+            if (!optionValues().includes(value)) {
+                return false;
+            }
+
+            submitting = true;
+            form.submit();
+            return true;
+        };
+
+        const clearOptions = () => {
+            datalist.innerHTML = '';
+        };
+
+        const renderOptions = (items) => {
+            clearOptions();
+            items.forEach((item) => {
+                const option = document.createElement('option');
+                option.value = item;
+                datalist.appendChild(option);
+            });
+        };
+
+        input.addEventListener('input', () => {
+            if (submitIfSuggestionSelected()) {
+                return;
+            }
+
+            const term = input.value.trim();
+
+            if (debounceTimer !== null) {
+                window.clearTimeout(debounceTimer);
+            }
+
+            if (activeController) {
+                activeController.abort();
+            }
+
+            if (term.length < 2) {
+                clearOptions();
+                return;
+            }
+
+            debounceTimer = window.setTimeout(() => {
+                activeController = new AbortController();
+                const requestUrl = `${suggestionsUrl}?q=${encodeURIComponent(term)}`;
+
+                fetch(requestUrl, {
+                    signal: activeController.signal,
+                    headers: { Accept: 'application/json' },
+                })
+                    .then((response) => (response.ok ? response.json() : { items: [] }))
+                    .then((payload) => {
+                        if (input.value.trim() !== term) {
+                            return;
+                        }
+
+                        const items = Array.isArray(payload.items) ? payload.items : [];
+                        renderOptions(items);
+                    })
+                    .catch((error) => {
+                        if (error && error.name !== 'AbortError') {
+                            clearOptions();
+                        }
+                    });
+            }, 220);
+        });
+
+        input.addEventListener('change', () => {
+            submitIfSuggestionSelected();
+        });
+    });
+
+    const fileInputsWithLimit = document.querySelectorAll('input[type="file"][data-max-bytes]');
+    fileInputsWithLimit.forEach((input) => {
+        const maxBytes = Number(input.dataset.maxBytes || 0);
+        const maxLabel = input.dataset.maxLabel || '2MB';
+        const errorTarget = document.querySelector(`[data-file-error="${input.name}"]`);
+
+        const hideError = () => {
+            if (!errorTarget) {
+                return;
+            }
+
+            errorTarget.textContent = '';
+            errorTarget.classList.add('hidden');
+        };
+
+        const showError = (message) => {
+            if (!errorTarget) {
+                return;
+            }
+
+            errorTarget.textContent = message;
+            errorTarget.classList.remove('hidden');
+        };
+
+        input.addEventListener('change', () => {
+            hideError();
+
+            if (maxBytes <= 0) {
+                return;
+            }
+
+            const selectedFiles = Array.from(input.files || []);
+            const invalidFile = selectedFiles.find((file) => file.size > maxBytes);
+
+            if (!invalidFile) {
+                return;
+            }
+
+            input.value = '';
+            showError(`A imagem "${invalidFile.name}" excede ${maxLabel}. Escolha um arquivo menor.`);
+        });
+    });
+
     const rotator = document.querySelector('[data-category-rotator]');
     if (!rotator) {
         return;

@@ -125,4 +125,80 @@ class Store extends Model
         $stmt = $this->db->prepare('UPDATE lojas SET status = "aprovada", updated_at = NOW() WHERE id = :id');
         $stmt->execute(['id' => $id]);
     }
+
+    public function featuredCount(): int
+    {
+        return (int) $this->db->query('SELECT COUNT(*) FROM lojas WHERE destaque = 1 AND status = "aprovada"')->fetchColumn();
+    }
+
+    public function setFeatured(int $id, bool $featured): bool
+    {
+        $existsStmt = $this->db->prepare('SELECT status FROM lojas WHERE id = :id LIMIT 1');
+        $existsStmt->execute(['id' => $id]);
+        $store = $existsStmt->fetch();
+        if (!$store) {
+            return false;
+        }
+
+        if ($featured) {
+            if (($store['status'] ?? '') !== 'aprovada') {
+                return false;
+            }
+        }
+
+        $stmt = $this->db->prepare('UPDATE lojas SET destaque = :destaque, updated_at = NOW() WHERE id = :id');
+        return $stmt->execute([
+            'id' => $id,
+            'destaque' => $featured ? 1 : 0,
+        ]);
+    }
+
+    public function adminMetrics(): array
+    {
+        $row = $this->db->query(
+            'SELECT
+                COUNT(*) AS total_lojas,
+                SUM(CASE WHEN status = "aprovada" THEN 1 ELSE 0 END) AS lojas_aprovadas,
+                SUM(CASE WHEN status = "pendente" THEN 1 ELSE 0 END) AS lojas_pendentes,
+                SUM(CASE WHEN status = "rejeitada" THEN 1 ELSE 0 END) AS lojas_rejeitadas,
+                SUM(CASE WHEN status = "suspensa" THEN 1 ELSE 0 END) AS lojas_suspensas
+             FROM lojas'
+        )->fetch() ?: [];
+
+        return [
+            'total_lojas' => (int) ($row['total_lojas'] ?? 0),
+            'lojas_aprovadas' => (int) ($row['lojas_aprovadas'] ?? 0),
+            'lojas_pendentes' => (int) ($row['lojas_pendentes'] ?? 0),
+            'lojas_rejeitadas' => (int) ($row['lojas_rejeitadas'] ?? 0),
+            'lojas_suspensas' => (int) ($row['lojas_suspensas'] ?? 0),
+        ];
+    }
+
+    public function adminOverview(): array
+    {
+        return $this->db->query(
+            'SELECT
+                l.*,
+                u.nome AS dono_nome,
+                u.email AS dono_email,
+                u.telefone AS dono_telefone,
+                COALESCE(ps.total_produtos, 0) AS total_produtos,
+                COALESCE(os.total_pedidos, 0) AS total_pedidos,
+                COALESCE(os.faturamento, 0) AS faturamento,
+                os.ultima_venda_em
+             FROM lojas l
+             INNER JOIN usuarios u ON u.id = l.usuario_id
+             LEFT JOIN (
+                SELECT loja_id, COUNT(*) AS total_produtos
+                FROM produtos
+                GROUP BY loja_id
+             ) ps ON ps.loja_id = l.id
+             LEFT JOIN (
+                SELECT loja_id, COUNT(*) AS total_pedidos, COALESCE(SUM(total), 0) AS faturamento, MAX(created_at) AS ultima_venda_em
+                FROM pedidos
+                GROUP BY loja_id
+             ) os ON os.loja_id = l.id
+             ORDER BY l.created_at DESC'
+        )->fetchAll();
+    }
 }

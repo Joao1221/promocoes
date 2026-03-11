@@ -11,6 +11,21 @@ class ProductController extends Controller
         ]);
     }
 
+    public function suggestions(): void
+    {
+        header('Content-Type: application/json; charset=UTF-8');
+
+        $query = trim((string) ($_GET['q'] ?? ''));
+        $length = function_exists('mb_strlen') ? mb_strlen($query) : strlen($query);
+        if ($length < 2) {
+            echo json_encode(['items' => []], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $items = (new Product())->suggestions($query, 8);
+        echo json_encode(['items' => $items], JSON_UNESCAPED_UNICODE);
+    }
+
     public function show(string $slug): void
     {
         $productModel = new Product();
@@ -60,6 +75,10 @@ class ProductController extends Controller
         }
 
         $categories = (new Category())->all();
+        $id = $_POST['id'] ?? null;
+        $productModel = new Product();
+        $existingProduct = $id ? $productModel->findForStore((int) $id, (int) $store['id']) : null;
+
         $data = [
             'loja_id' => (int) $store['id'],
             'categoria_id' => (int) ($_POST['categoria_id'] ?? 0),
@@ -72,7 +91,7 @@ class ProductController extends Controller
             'sku' => '',
             'imagem_principal' => null,
             'status' => 'aprovado',
-            'destaque' => isset($_POST['destaque']) ? 1 : 0,
+            'destaque' => (int) ($existingProduct['destaque'] ?? 0),
         ];
 
         $data['sku'] = 'TMP-' . time();
@@ -82,10 +101,12 @@ class ProductController extends Controller
             $this->redirect('lojista/produtos/novo');
         }
 
-        $productModel = new Product();
+        if ($id && !$existingProduct) {
+            Session::flash('error', 'Produto nao encontrado para sua loja.');
+            $this->redirect('lojista');
+        }
+
         $uploadedImages = [];
-        $id = $_POST['id'] ?? null;
-        $existingProduct = $id ? $productModel->findForStore((int) $id, (int) $store['id']) : null;
 
         try {
             $uploadedImages = $this->uploadGallery($_FILES['imagens'] ?? [], __DIR__ . '/../../uploads/produtos');

@@ -25,6 +25,7 @@
                 <?php endif; ?>
                 <?php if (($authUser['role'] ?? '') === 'admin'): ?>
                     <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('admin')) ?>">Moderacao</a>
+                    <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('admin/destaques')) ?>">Destaques</a>
                     <a class="block rounded-xl bg-slate-800 px-4 py-3" href="<?= e(url('admin/categorias')) ?>">Categorias</a>
                 <?php endif; ?>
             </nav>

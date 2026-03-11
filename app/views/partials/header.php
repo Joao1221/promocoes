@@ -5,7 +5,10 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
 <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
     <div class="mx-auto max-w-7xl px-4 py-4">
         <div class="flex items-center justify-between gap-4">
-            <a href="<?= e(url('')) ?>" class="shrink-0 text-2xl font-black text-blue-600">Capela Market</a>
+            <a href="<?= e(url('')) ?>" class="inline-flex shrink-0 items-center gap-2 text-2xl font-black text-blue-600">
+                <img src="<?= e(url('public/img/capela-shopping-logo.png')) ?>" alt="Capela Shopping" class="h-[3.75rem] w-auto object-contain">
+                <span>Capela Market</span>
+            </a>
             <div class="flex items-center gap-2">
                 <span class="hidden text-sm text-slate-600 md:block"><?= e($authUser['nome'] ?? '') ?></span>
                 <a href="<?= e(url('carrinho')) ?>" class="cart-icon-button relative inline-flex h-11 w-11 items-center justify-center text-slate-700" aria-label="Abrir carrinho">
@@ -29,9 +32,10 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
         <div class="mt-4 flex items-center gap-3 md:mt-3">
             <form action="<?= e(url('buscar')) ?>" method="GET" class="min-w-0 flex-1">
                 <div class="relative">
-                    <input type="search" name="q" placeholder="Buscar produtos" class="w-full rounded-[4px] border border-slate-200 bg-slate-50 px-4 py-3 pr-14 focus:border-blue-500 focus:outline-none">
-                    <button type="submit" class="absolute right-1.5 top-1.5 flex h-10 w-10 items-center justify-center rounded-[4px] bg-blue-600 text-white" aria-label="Buscar">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
+                    <input type="search" name="q" placeholder="Buscar produtos" class="w-full rounded-[4px] border border-slate-200 bg-slate-50 px-4 py-[0.35rem] pr-10 focus:border-blue-500 focus:outline-none" list="home-search-suggestions" autocomplete="off" data-search-autocomplete data-suggestions-url="<?= e(url('buscar/sugestoes')) ?>">
+                    <datalist id="home-search-suggestions"></datalist>
+                    <button type="submit" class="absolute right-1 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-[4px] bg-blue-600 text-white" aria-label="Buscar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
                             <circle cx="11" cy="11" r="7"></circle>
                             <path d="m20 20-3.5-3.5"></path>
                         </svg>
@@ -41,18 +45,18 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
             <div class="hidden items-center gap-3 md:flex">
                 <?php if ($authUser): ?>
                     <?php if ($isMarketplaceUser): ?>
-                        <a href="<?= e(url('lojista')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Vender</a>
+                        <a href="<?= e(url('lojista')) ?>" class="rounded-[4px] border border-blue-600 bg-white px-3 py-[0.35rem] text-sm font-semibold text-blue-600">Vender</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>
-                        <a href="<?= e(url('admin')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Admin</a>
+                        <a href="<?= e(url('admin')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-[0.35rem] text-sm font-semibold">Admin</a>
                     <?php endif; ?>
                     <form action="<?= e(url('logout')) ?>" method="POST">
                         <input type="hidden" name="_token" value="<?= e(Csrf::token()) ?>">
-                        <button class="rounded-[4px] bg-blue-600 px-3 py-3 text-sm font-semibold text-white">Sair</button>
+                        <button class="rounded-[4px] bg-blue-600 px-3 py-[0.35rem] text-sm font-semibold text-white">Sair</button>
                     </form>
                 <?php else: ?>
-                    <a href="<?= e(url('login')) ?>" class="rounded-[4px] bg-blue-600 px-3 py-3 text-sm font-semibold text-white">Entre</a>
-                    <a href="<?= e(url('cadastro')) ?>" class="rounded-[4px] border border-blue-600 bg-white px-3 py-3 text-sm font-semibold text-blue-600">Crie sua conta</a>
+                    <a href="<?= e(url('login')) ?>" class="rounded-[4px] bg-blue-600 px-3 py-[0.35rem] text-sm font-semibold text-white">Entre</a>
+                    <a href="<?= e(url('cadastro')) ?>" class="rounded-[4px] border border-blue-600 bg-white px-3 py-[0.35rem] text-sm font-semibold text-blue-600">Crie sua conta</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -63,14 +67,14 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
             <?php if ($authUser): ?>
                 <div class="space-y-3">
                     <?php if ($isMarketplaceUser): ?>
-                        <a href="<?= e(url('lojista')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Vender</a>
+                        <a href="<?= e(url('lojista')) ?>" class="block w-full rounded-[4px] border border-blue-600 bg-white px-4 py-[0.35rem] text-center text-sm font-semibold text-blue-600">Vender</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>
-                        <a href="<?= e(url('admin')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Admin</a>
+                        <a href="<?= e(url('admin')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-[0.35rem] text-sm font-semibold text-slate-900">Admin</a>
                     <?php endif; ?>
                     <form action="<?= e(url('logout')) ?>" method="POST">
                         <input type="hidden" name="_token" value="<?= e(Csrf::token()) ?>">
-                        <button class="block w-full rounded-[4px] bg-blue-600 px-4 py-3 text-sm font-semibold text-white">Sair</button>
+                        <button class="block w-full rounded-[4px] bg-blue-600 px-4 py-[0.35rem] text-sm font-semibold text-white">Sair</button>
                     </form>
                 </div>
             <?php else: ?>
@@ -80,8 +84,8 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
                         <p class="mt-1 text-sm text-slate-600">Entre ou crie a sua conta para comprar</p>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
-                        <a href="<?= e(url('login')) ?>" class="block rounded-[4px] bg-blue-600 px-3 py-3 text-center text-sm font-semibold text-white">Entre</a>
-                        <a href="<?= e(url('cadastro')) ?>" class="block rounded-[4px] border border-blue-600 bg-white px-3 py-3 text-center text-sm font-semibold text-blue-600">Crie sua conta</a>
+                        <a href="<?= e(url('login')) ?>" class="block rounded-[4px] bg-blue-600 px-3 py-[0.35rem] text-center text-sm font-semibold text-white">Entre</a>
+                        <a href="<?= e(url('cadastro')) ?>" class="block rounded-[4px] border border-blue-600 bg-white px-3 py-[0.35rem] text-center text-sm font-semibold text-blue-600">Crie sua conta</a>
                     </div>
                 </div>
             <?php endif; ?>

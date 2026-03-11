@@ -82,6 +82,16 @@ CREATE TABLE IF NOT EXISTS produtos (
     FULLTEXT INDEX ftx_produtos_nome_descricao (nome, descricao)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS home_produtos_destaque (
+    posicao TINYINT UNSIGNED NOT NULL,
+    produto_id BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (posicao),
+    UNIQUE KEY uq_home_destaque_produto (produto_id),
+    CONSTRAINT fk_home_destaque_produto FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS imagens_produtos (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     produto_id BIGINT UNSIGNED NOT NULL,

@@ -1,6 +1,8 @@
 <?php
 class Upload
 {
+    public const IMAGE_MAX_SIZE_BYTES = 2 * 1024 * 1024;
+
     private const ALLOWED = [
         'image/jpeg' => 'jpg',
         'image/png' => 'png',
@@ -17,7 +19,7 @@ class Upload
             throw new RuntimeException('Falha no upload.');
         }
 
-        if (($file['size'] ?? 0) > 2 * 1024 * 1024) {
+        if (($file['size'] ?? 0) > self::IMAGE_MAX_SIZE_BYTES) {
             throw new RuntimeException('Imagem excede 2MB.');
         }
 
