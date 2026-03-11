@@ -30,7 +30,7 @@ class AuthController extends Controller
             $this->redirect('admin');
         }
 
-        $store = (new Store())->byUser((int) $user['id']);
+        $store = (int) $user['id'] > 0 ? (new Store())->byUser((int) $user['id']) : null;
         $this->redirect($store ? 'lojista' : '');
     }
 

@@ -23,7 +23,12 @@ class User extends Model
             'role' => $data['role'],
             'status' => $data['status'] ?? 'ativo',
         ]);
-        return (int) $this->db->lastInsertId();
+        $id = (int) $this->db->lastInsertId();
+        if ($id <= 0) {
+            throw new RuntimeException('Falha ao criar usuario: a tabela usuarios esta sem AUTO_INCREMENT valido.');
+        }
+
+        return $id;
     }
 
     public function updateCheckoutProfile(int $id, array $data): void

@@ -41,7 +41,7 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
             <div class="hidden items-center gap-3 md:flex">
                 <?php if ($authUser): ?>
                     <?php if ($isMarketplaceUser): ?>
-                        <a href="<?= e(url('lojista')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Painel</a>
+                        <a href="<?= e(url('lojista')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Vender</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>
                         <a href="<?= e(url('admin')) ?>" class="rounded-[4px] bg-slate-100 px-3 py-3 text-sm font-semibold">Admin</a>
@@ -63,7 +63,7 @@ $isMarketplaceUser = $authUser && in_array(($authUser['role'] ?? ''), ['consumid
             <?php if ($authUser): ?>
                 <div class="space-y-3">
                     <?php if ($isMarketplaceUser): ?>
-                        <a href="<?= e(url('lojista')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Painel</a>
+                        <a href="<?= e(url('lojista')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Vender</a>
                     <?php endif; ?>
                     <?php if (($authUser['role'] ?? '') === 'admin'): ?>
                         <a href="<?= e(url('admin')) ?>" class="block rounded-[4px] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900">Admin</a>

@@ -41,11 +41,11 @@ class OrderController extends Controller
             'nome_cliente' => trim($_POST['nome_cliente'] ?? ''),
             'telefone_cliente' => trim($_POST['telefone_cliente'] ?? ''),
             'endereco_entrega' => trim($_POST['endereco_entrega'] ?? ''),
-            'forma_pagamento' => trim($_POST['forma_pagamento'] ?? ''),
+            'forma_pagamento' => 'Negociar no WhatsApp',
             'observacoes' => trim($_POST['observacoes'] ?? ''),
         ];
 
-        if (Validator::required($customer, ['nome_cliente', 'telefone_cliente', 'endereco_entrega', 'forma_pagamento'])) {
+        if (Validator::required($customer, ['nome_cliente', 'telefone_cliente', 'endereco_entrega'])) {
             Session::flash('error', 'Preencha os dados de entrega.');
             $this->redirect('checkout');
         }
@@ -68,9 +68,41 @@ class OrderController extends Controller
         }, array_values($cart));
         $total = array_sum(array_column($items, 'subtotal'));
 
+        $store = (new Store())->find((int) $storeId);
+        if (!$store || trim((string) ($store['whatsapp'] ?? '')) === '') {
+            Session::flash('error', 'A loja nao possui WhatsApp cadastrado para concluir o pedido.');
+            $this->redirect('checkout');
+        }
+
         (new Order())->create((int) Auth::user()['id'], (int) $storeId, $customer, $items, $total);
         Session::forget('cart');
-        Session::flash('success', 'Pedido enviado para a loja.');
-        $this->redirect('');
+
+        $messageLines = [
+            '*Pedido Capela Market:*',
+            '*Cliente:* ' . $customer['nome_cliente'],
+            '*Telefone:* ' . $customer['telefone_cliente'],
+            '*Entrega:* ' . $customer['endereco_entrega'],
+        ];
+
+        if ($customer['observacoes'] !== '') {
+            $messageLines[] = '*Observacoes:* ' . $customer['observacoes'];
+        }
+
+        $messageLines[] = '';
+        $messageLines[] = '*Resumo:*';
+        $messageLines[] = '';
+
+        foreach ($items as $item) {
+            $messageLines[] = sprintf('%dx %s', (int) $item['quantidade'], $item['nome']);
+            $messageLines[] = format_price((float) $item['subtotal']);
+            $messageLines[] = '';
+        }
+
+        $messageLines[] = '*Total geral*';
+        $messageLines[] = '*' . format_price((float) $total) . '*';
+
+        $whatsAppUrl = 'https://wa.me/55' . preg_replace('/\D+/', '', (string) $store['whatsapp']) . '?text=' . rawurlencode(implode("\n", $messageLines));
+        header('Location: ' . $whatsAppUrl);
+        exit;
     }
 }

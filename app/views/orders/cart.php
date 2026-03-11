@@ -32,7 +32,10 @@
                 <span class="text-lg">Total</span>
                 <span class="text-3xl font-black"><?= e(format_price($total)) ?></span>
             </div>
-            <a href="<?= e(url('checkout')) ?>" class="mt-6 inline-block rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white">Finalizar pedido</a>
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a href="<?= e(url('')) ?>" class="block w-full rounded-2xl bg-white/10 px-5 py-3 text-center font-bold text-white ring-1 ring-white/20">Continuar comprando</a>
+                <a href="<?= e(url('checkout')) ?>" class="block w-full rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white">Finalizar pedido</a>
+            </div>
         </div>
     <?php endif; ?>
 </section>

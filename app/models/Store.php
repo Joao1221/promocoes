@@ -30,8 +30,19 @@ class Store extends Model
 
     public function byUser(int $userId): ?array
     {
-        $stmt = $this->db->prepare('SELECT * FROM lojas WHERE usuario_id = :usuario_id LIMIT 1');
+        if ($userId <= 0) {
+            return null;
+        }
+
+        $stmt = $this->db->prepare('SELECT * FROM lojas WHERE usuario_id = :usuario_id AND usuario_id > 0 LIMIT 1');
         $stmt->execute(['usuario_id' => $userId]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public function find(int $id): ?array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM lojas WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch() ?: null;
     }
 
@@ -47,7 +58,12 @@ class Store extends Model
             ...$data,
             'banner_mobile' => $data['banner_mobile'] ?? null,
         ]);
-        return (int) $this->db->lastInsertId();
+        $id = (int) $this->db->lastInsertId();
+        if ($id <= 0) {
+            throw new RuntimeException('Falha ao criar loja: a tabela lojas esta sem AUTO_INCREMENT valido.');
+        }
+
+        return $id;
     }
 
     public function update(int $id, array $data): void

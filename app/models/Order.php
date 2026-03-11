@@ -24,6 +24,10 @@ class Order extends Model
             ]);
 
             $orderId = (int) $this->db->lastInsertId();
+            if ($orderId <= 0) {
+                throw new RuntimeException('Falha ao criar pedido: a tabela pedidos esta sem AUTO_INCREMENT valido.');
+            }
+
             $itemStmt = $this->db->prepare(
                 'INSERT INTO pedido_itens
                  (pedido_id, produto_id, quantidade, preco_unitario, subtotal, created_at)

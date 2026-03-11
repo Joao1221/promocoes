@@ -8,7 +8,9 @@
     <title><?= e($title) ?> | <?= e(config('app')['name']) ?></title>
     <link rel="icon" type="image/png" href="<?= e(url('public/img/favicon.png')) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">
+    <script defer src="<?= e(asset('js/app.js')) ?>"></script>
 </head>
 <body class="bg-slate-100">
     <div class="min-h-screen lg:grid lg:grid-cols-[280px_1fr]">
