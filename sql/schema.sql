@@ -145,6 +145,20 @@ CREATE TABLE IF NOT EXISTS favoritos (
     UNIQUE KEY uq_favoritos_usuario_produto (usuario_id, produto_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS chatbot_faqs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    intent VARCHAR(80) NOT NULL,
+    titulo VARCHAR(120) NOT NULL,
+    pergunta_exemplo VARCHAR(255) NULL,
+    resposta TEXT NOT NULL,
+    ordem INT NOT NULL DEFAULT 0,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_chatbot_faqs_intent (intent),
+    INDEX idx_chatbot_faqs_ativo_ordem (ativo, ordem)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 INSERT INTO categorias (nome, slug, icone) VALUES
 ('Supermercado', 'supermercado', 'Carrinho'),
 ('Farmacia', 'farmacia', 'Saude'),
@@ -158,6 +172,32 @@ ON DUPLICATE KEY UPDATE nome = VALUES(nome), icone = VALUES(icone);
 INSERT INTO usuarios (nome, email, senha, role, status)
 VALUES ('Administrador', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', 'admin', 'ativo')
 ON DUPLICATE KEY UPDATE nome = VALUES(nome);
+
+INSERT INTO chatbot_faqs (intent, titulo, pergunta_exemplo, resposta, ordem, ativo) VALUES
+('cadastro_comprador', 'Cadastro de comprador', 'Como criar cadastro de comprador?', 'Passo a passo para cadastro de comprador: 1. Clique em Crie sua conta. 2. Preencha nome, email, telefone e senha. 3. Conclua o cadastro. 4. Para comprar, informe seu endereco de entrega no checkout do primeiro pedido.', 10, 1),
+('cadastro_vendedor', 'Cadastro para vender', 'Como vender no site?', 'Passo a passo para vender: 1. Crie sua conta normalmente. 2. Acesse o menu Vender. 3. Escolha pessoa fisica (CPF) ou juridica (CNPJ). 4. Complete a identificacao. 5. Cadastre seus produtos para comecar a vender.', 20, 1),
+('criar_loja', 'Criacao de loja', 'Como cadastrar loja?', 'Passo a passo para criar loja: 1. Entre no painel Vender. 2. Acesse Cadastro de loja. 3. Informe nome da loja, descricao, documento, contato e endereco. 4. Envie logo e banners. 5. Salve e depois cadastre os produtos.', 30, 1),
+('endereco_entrega', 'Endereco de entrega', 'Onde informo endereco de entrega?', 'Endereco de entrega: 1. Escolha produtos e va para o carrinho. 2. Clique em Finalizar compra. 3. Preencha o endereco completo. 4. Confirme o pagamento para concluir o pedido.', 40, 1),
+('cpf_cnpj', 'Documento para vender', 'Como funciona CPF e CNPJ para vender?', 'Para vender com identificacao: 1. Use CPF para pessoa fisica. 2. Use CNPJ para empresa. 3. Preencha o documento corretamente no cadastro de loja. 4. Mantenha os dados validos para aprovacoes futuras.', 50, 1),
+('login', 'Acesso a conta', 'Como entrar na conta?', 'Para entrar na conta: 1. Clique em Entre. 2. Informe email e senha. 3. Se nao tiver conta, clique em Crie sua conta e finalize o cadastro.', 60, 1)
+ON DUPLICATE KEY UPDATE
+    titulo = VALUES(titulo),
+    pergunta_exemplo = VALUES(pergunta_exemplo),
+    resposta = VALUES(resposta),
+    ordem = VALUES(ordem),
+    ativo = VALUES(ativo);
+
+INSERT INTO chatbot_faqs (intent, titulo, pergunta_exemplo, resposta, ordem, ativo) VALUES
+('compra_e_agora', 'Compra realizada', 'Fiz a compra e agora?', 'Um WhatsApp e enviado para o vendedor com os dados da compra, aguarde ele responder e negocie o pagamento com ele.', 70, 1),
+('o_que_posso_vender', 'O que posso vender', 'O que posso vender?', 'Tudo que voce quiser, desde um doce, ate um aviao.', 80, 1),
+('o_que_posso_comprar', 'O que posso comprar', 'O que posso comprar?', 'Tudo que estiver exposto no site e seu dinheiro der.', 90, 1),
+('como_encontrar_produto', 'Como encontrar produto', 'Como encontrar o que eu quero comprar?', 'Na barra de pesquisa, digite o nome do que voce quer comprar, se estiver a venda, vai aparecer na lista.', 100, 1)
+ON DUPLICATE KEY UPDATE
+    titulo = VALUES(titulo),
+    pergunta_exemplo = VALUES(pergunta_exemplo),
+    resposta = VALUES(resposta),
+    ordem = VALUES(ordem),
+    ativo = VALUES(ativo);
 
 ALTER TABLE lojas
     ADD COLUMN IF NOT EXISTS vende_online TINYINT(1) NOT NULL DEFAULT 1 AFTER whatsapp,

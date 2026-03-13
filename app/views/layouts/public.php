@@ -24,6 +24,7 @@
         <?php endif; ?>
         <?= $content ?>
     </main>
+    <?php require __DIR__ . '/../partials/chatbot.php'; ?>
     <?php require __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>

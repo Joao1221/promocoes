@@ -37,6 +37,8 @@ $router->post('/logout', [AuthController::class, 'logout']);
 
 $router->get('/buscar', [ProductController::class, 'search']);
 $router->get('/buscar/sugestoes', [ProductController::class, 'suggestions']);
+$router->post('/chat/perguntar', [ChatbotController::class, 'ask']);
+$router->get('/chat/perguntar', [ChatbotController::class, 'ask']);
 $router->get('/produto/{slug}', [ProductController::class, 'show']);
 $router->get('/loja/{slug}', [StoreController::class, 'show']);
 

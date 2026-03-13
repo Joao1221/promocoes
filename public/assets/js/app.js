@@ -222,6 +222,159 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const chatbotRoot = document.querySelector('[data-help-chatbot]');
+    if (chatbotRoot) {
+        const endpoint = chatbotRoot.dataset.chatbotEndpoint || '';
+        const toggleButton = chatbotRoot.querySelector('[data-chatbot-toggle]');
+        const closeButton = chatbotRoot.querySelector('[data-chatbot-close]');
+        const panel = chatbotRoot.querySelector('[data-chatbot-panel]');
+        const messagesBox = chatbotRoot.querySelector('[data-chatbot-messages]');
+        const optionsBox = chatbotRoot.querySelector('[data-chatbot-options]');
+        const form = chatbotRoot.querySelector('[data-chatbot-form]');
+        const input = chatbotRoot.querySelector('[data-chatbot-input]');
+        const sendButton = chatbotRoot.querySelector('[data-chatbot-send]');
+
+        if (endpoint && toggleButton && closeButton && panel && messagesBox && optionsBox && form && input && sendButton) {
+            let welcomeLoaded = false;
+            let loading = false;
+
+            const scrollToBottom = () => {
+                messagesBox.scrollTop = messagesBox.scrollHeight;
+            };
+
+            const setLoading = (isLoading) => {
+                loading = isLoading;
+                input.disabled = isLoading;
+                sendButton.disabled = isLoading;
+                if (!isLoading) {
+                    input.focus();
+                }
+            };
+
+            const appendMessage = (author, text) => {
+                const item = document.createElement('div');
+                item.className = author === 'user' ? 'chatbot-message chatbot-message-user' : 'chatbot-message chatbot-message-bot';
+
+                const lines = String(text || '').split('\n');
+                lines.forEach((line, index) => {
+                    if (index > 0) {
+                        item.appendChild(document.createElement('br'));
+                    }
+                    item.appendChild(document.createTextNode(line));
+                });
+
+                messagesBox.appendChild(item);
+                scrollToBottom();
+            };
+
+            const renderOptions = (options) => {
+                optionsBox.innerHTML = '';
+                if (!Array.isArray(options) || options.length === 0) {
+                    return;
+                }
+
+                options.slice(0, 5).forEach((label) => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'chatbot-option';
+                    button.textContent = label;
+                    button.addEventListener('click', () => {
+                        requestReply(label, true);
+                    });
+                    optionsBox.appendChild(button);
+                });
+            };
+
+            const requestReply = (message, showUserMessage) => {
+                if (loading) {
+                    return;
+                }
+
+                const cleanedMessage = String(message || '').trim();
+                if (showUserMessage && cleanedMessage === '') {
+                    return;
+                }
+
+                if (showUserMessage) {
+                    appendMessage('user', cleanedMessage);
+                }
+
+                setLoading(true);
+
+                const payload = new URLSearchParams();
+                payload.set('message', cleanedMessage);
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        Accept: 'application/json',
+                    },
+                    body: payload.toString(),
+                })
+                    .then((response) => (response.ok ? response.json() : Promise.reject(new Error('chatbot_error'))))
+                    .then((data) => {
+                        const answer = String(data.answer || '').trim();
+                        if (answer !== '') {
+                            appendMessage('bot', answer);
+                        } else {
+                            appendMessage('bot', 'Nao consegui montar uma resposta agora. Tente novamente.');
+                        }
+
+                        renderOptions(data.options || []);
+                    })
+                    .catch(() => {
+                        appendMessage('bot', 'Estou com instabilidade no momento. Tente novamente em instantes.');
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
+            };
+
+            const openPanel = () => {
+                panel.classList.remove('hidden');
+                toggleButton.setAttribute('aria-expanded', 'true');
+                if (!welcomeLoaded) {
+                    welcomeLoaded = true;
+                    requestReply('', false);
+                } else {
+                    input.focus();
+                }
+            };
+
+            const closePanel = () => {
+                panel.classList.add('hidden');
+                toggleButton.setAttribute('aria-expanded', 'false');
+            };
+
+            toggleButton.addEventListener('click', () => {
+                if (panel.classList.contains('hidden')) {
+                    openPanel();
+                } else {
+                    closePanel();
+                }
+            });
+
+            closeButton.addEventListener('click', closePanel);
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (loading) {
+                    return;
+                }
+
+                const message = input.value.trim();
+                if (message === '') {
+                    input.focus();
+                    return;
+                }
+
+                input.value = '';
+                requestReply(message, true);
+            });
+        }
+    }
+
     const rotator = document.querySelector('[data-category-rotator]');
     if (!rotator) {
         return;

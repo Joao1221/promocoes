@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11/03/2026 às 16:46
+-- Tempo de geração: 13/03/2026 às 12:10
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -75,7 +75,55 @@ INSERT INTO `categorias` (`id`, `nome`, `slug`, `icone`, `created_at`, `updated_
 (32, 'Cama, Mesa e Banho', 'cama-mesa-e-banho', 'CamaMesaBanho', '2026-03-09 12:37:20', '2026-03-09 12:58:18'),
 (33, 'Posto de lavagem', 'posto-de-lavagem', 'Agenda', '2026-03-09 12:53:37', '2026-03-09 12:53:37'),
 (74, 'Beleza', 'beleza', 'Higiene', '2026-03-11 13:09:57', '2026-03-11 13:09:57'),
-(75, 'Perfumaria', 'perfumaria', 'Higiene', '2026-03-11 13:11:48', '2026-03-11 13:12:39');
+(75, 'Perfumaria', 'perfumaria', 'Higiene', '2026-03-11 13:11:48', '2026-03-11 13:12:39'),
+(76, 'Supermercado', 'supermercado', 'Carrinho', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(77, 'Farmacia', 'farmacia', 'Saude', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(78, 'Restaurantes', 'restaurantes', 'Prato', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(79, 'Moda', 'moda', 'Camisa', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(80, 'Eletronicos', 'eletronicos', 'Plug', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(81, 'Construcao', 'construcao', 'Ferramenta', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(82, 'Servicos', 'servicos', 'Agenda', '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(83, 'Supermercado', 'supermercado', 'Carrinho', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(84, 'Farmacia', 'farmacia', 'Saude', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(85, 'Restaurantes', 'restaurantes', 'Prato', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(86, 'Moda', 'moda', 'Camisa', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(87, 'Eletronicos', 'eletronicos', 'Plug', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(88, 'Construcao', 'construcao', 'Ferramenta', '2026-03-13 10:57:20', '2026-03-13 10:57:20'),
+(89, 'Servicos', 'servicos', 'Agenda', '2026-03-13 10:57:20', '2026-03-13 10:57:20');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `chatbot_faqs`
+--
+
+CREATE TABLE `chatbot_faqs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `intent` varchar(80) NOT NULL,
+  `titulo` varchar(120) NOT NULL,
+  `pergunta_exemplo` varchar(255) DEFAULT NULL,
+  `resposta` text NOT NULL,
+  `ordem` int(11) NOT NULL DEFAULT 0,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `chatbot_faqs`
+--
+
+INSERT INTO `chatbot_faqs` (`id`, `intent`, `titulo`, `pergunta_exemplo`, `resposta`, `ordem`, `ativo`, `created_at`, `updated_at`) VALUES
+(1, 'cadastro_comprador', 'Cadastro de comprador', 'Como criar cadastro de comprador?', 'Passo a passo para cadastro de comprador: 1. Clique em Crie sua conta. 2. Preencha nome, email, telefone e senha. 3. Conclua o cadastro. 4. Para comprar, informe seu endereco de entrega no checkout do primeiro pedido.', 10, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(2, 'cadastro_vendedor', 'Cadastro para vender', 'Como vender no site?', 'Passo a passo para vender: 1. Crie sua conta normalmente. 2. Acesse o menu Vender. 3. Escolha pessoa fisica (CPF) ou juridica (CNPJ). 4. Complete a identificacao. 5. Cadastre seus produtos para comecar a vender.', 20, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(3, 'criar_loja', 'Criacao de loja', 'Como cadastrar loja?', 'Passo a passo para criar loja: 1. Entre no painel Vender. 2. Acesse Cadastro de loja. 3. Informe nome da loja, descricao, documento, contato e endereco. 4. Envie logo e banners. 5. Salve e depois cadastre os produtos.', 30, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(4, 'endereco_entrega', 'Endereco de entrega', 'Onde informo endereco de entrega?', 'Endereco de entrega: 1. Escolha produtos e va para o carrinho. 2. Clique em Finalizar compra. 3. Preencha o endereco completo. 4. Confirme o pagamento para concluir o pedido.', 40, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(5, 'cpf_cnpj', 'Documento para vender', 'Como funciona CPF e CNPJ para vender?', 'Para vender com identificacao: 1. Use CPF para pessoa fisica. 2. Use CNPJ para empresa. 3. Preencha o documento corretamente no cadastro de loja. 4. Mantenha os dados validos para aprovacoes futuras.', 50, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(6, 'login', 'Acesso a conta', 'Como entrar na conta?', 'Para entrar na conta: 1. Clique em Entre. 2. Informe email e senha. 3. Se nao tiver conta, clique em Crie sua conta e finalize o cadastro.', 60, 1, '2026-03-13 10:38:18', '2026-03-13 10:38:18'),
+(7, 'compra_e_agora', 'Compra realizada', 'Fiz a compra e agora?', 'Um WhatsApp é enviado para o vendedor com os dados da compra, aguarde ele responder e negocie o pagamento com ele.', 70, 1, '2026-03-13 10:53:13', '2026-03-13 10:59:50'),
+(8, 'o_que_posso_vender', 'O que posso vender', 'O que posso vender?', 'Tudo que você quiser, desde um doce, ate um avião.', 80, 1, '2026-03-13 10:53:13', '2026-03-13 10:58:48'),
+(9, 'o_que_posso_comprar', 'O que posso comprar', 'O que posso comprar?', 'Tudo que estiver exposto no site e seu dinheiro der.', 90, 1, '2026-03-13 10:53:13', '2026-03-13 10:57:20'),
+(10, 'como_encontrar_produto', 'Como encontrar produto', 'Como encontrar o que eu quero comprar?', 'Na barra de pesquisa, digite o nome do que você quer comprar, se estiver a venda, vai aparecer na lista.', 100, 1, '2026-03-13 10:53:13', '2026-03-13 10:59:10');
 
 -- --------------------------------------------------------
 
@@ -88,6 +136,19 @@ CREATE TABLE `favoritos` (
   `usuario_id` bigint(20) UNSIGNED NOT NULL,
   `produto_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `home_produtos_destaque`
+--
+
+CREATE TABLE `home_produtos_destaque` (
+  `posicao` tinyint(3) UNSIGNED NOT NULL,
+  `produto_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -372,7 +433,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `telefone`, `endereco_entrega`, `role`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'João Rezende', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '(79) 99924-8114', 'Rua Quirino, 1100', 'admin', 'ativo', '2026-03-10 10:17:19', '2026-03-10 10:18:58'),
+(1, 'Administrador', 'admin@capelamarket.com', '$2y$10$UGLgqQ1Lk9r8RwcvCPHvieNkx.o0THnwnX.x5C9m2kRYCgl/PSJLa', '(79) 99924-8114', 'Rua Quirino, 1100', 'admin', 'ativo', '2026-03-10 10:17:19', '2026-03-13 10:38:18'),
 (2, 'Loja Tem de Tudo', 'lojista-loja-tem-de-tudo@local.invalid', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '(79) 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 23:25:46'),
 (3, 'Farmacia Popular', 'lojista-farmacia-popular@local.invalid', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '79 98139-5097', NULL, 'lojista', 'ativo', '2026-03-10 20:57:52', '2026-03-10 23:25:52'),
 (8, 'Elson Ribeiro Santos', 'elson@gmail.com', '$2y$10$c25MgmXa2NZZgswO7XdIc.L8/JE8FL//OR9uPF4ILOWpp0hZZBLf2', '79 99924-8114', 'Rua da palmeira, 345', 'consumidor', 'ativo', '2026-03-10 21:05:26', '2026-03-10 23:26:01'),
@@ -390,10 +451,25 @@ ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `chatbot_faqs`
+--
+ALTER TABLE `chatbot_faqs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_chatbot_faqs_intent` (`intent`),
+  ADD KEY `idx_chatbot_faqs_ativo_ordem` (`ativo`,`ordem`);
+
+--
 -- Índices de tabela `favoritos`
 --
 ALTER TABLE `favoritos`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `home_produtos_destaque`
+--
+ALTER TABLE `home_produtos_destaque`
+  ADD PRIMARY KEY (`posicao`),
+  ADD UNIQUE KEY `uq_home_destaque_produto` (`produto_id`);
 
 --
 -- Índices de tabela `imagens_produtos`
@@ -453,7 +529,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+
+--
+-- AUTO_INCREMENT de tabela `chatbot_faqs`
+--
+ALTER TABLE `chatbot_faqs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de tabela `favoritos`
@@ -495,11 +577,17 @@ ALTER TABLE `produtos`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `home_produtos_destaque`
+--
+ALTER TABLE `home_produtos_destaque`
+  ADD CONSTRAINT `fk_home_destaque_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `lojas`
